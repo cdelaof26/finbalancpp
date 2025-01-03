@@ -10,7 +10,6 @@ Esta aplicación utiliza las siguientes tecnologías:
 - [React](https://react.dev)
   - [NextJS](https://nextjs.org)
 - [TailwindCSS](https://tailwindcss.com)
-  - [DaisyUI](https://daisyui.com)
 - [Tauri](https://v2.tauri.app)
 
 ### License
@@ -27,16 +26,39 @@ git clone https://github.com/cdelaof26/finbalancpp
 # Navigate to the project directory
 cd finbalancpp
 
-# Install all the dependencies
-npm install --save-dev next@latest react@latest react-dom@latest daisyui@latest @tauri-apps/cli@">1.0.0"
+# Install all the dependencies in package.json
+npm install
 
 # Run the development server
+# Open http://localhost:3000 with your browser to see the webpage
 npm run dev
+
+# Or Run using Tauri (desktop app)
+npm run tauri run
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the webpage
+### Building from source
+
+```bash
+# Clone this repo
+git clone https://github.com/cdelaof26/finbalancpp
+
+# Navigate to the project directory
+cd finbalancpp
+
+# Install all the dependencies in package.json
+npm install
+
+# Build using Tauri
+npm run tauri build
+```
 
 ### Versioning
+
+#### v0.0.2
+- Login, sign up and help page
+  - _Not working yet_
+- Removed DaisyUI as dependency
 
 #### v0.0.1
 - Initial project - `Hello World!`
