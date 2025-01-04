@@ -55,6 +55,12 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.3
+- Home page
+  - _Not working yet_
+- Set minimum width and height for the app
+- App colors are now defined in tha tailwind config file
+
 #### v0.0.2
 - Login, sign up and help page
   - _Not working yet_

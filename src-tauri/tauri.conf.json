@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "finbalancpp",
-  "version": "0.1.0",
+  "version": "0.0.3",
   "identifier": "com.tauri.dev",
   "build": {
     "frontendDist": "../out",
@@ -15,6 +15,8 @@
         "title": "FinbalanC++",
         "width": 1200,
         "height": 800,
+        "minWidth": 520,
+        "minHeight": 800,
         "resizable": true,
         "fullscreen": false
       }
