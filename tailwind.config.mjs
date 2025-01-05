@@ -29,6 +29,8 @@ export default {
           "dim-0": "#6b7280", // gray-500
           "dim-1": "#9ca3af", // gray-400
           "0": "#3b82f6", // blue-500
+          "1": "#0ea5e9", // sky-500
+          "2": "#075985", // sky-800
           "fg-0": "#111827", // gray-900
           "fg-1": "#FFFFFF", // white
           "b-0": "#cbd5e1", // slate-300

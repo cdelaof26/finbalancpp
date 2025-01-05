@@ -138,6 +138,32 @@ function credit_card(classNameData) {
     );
 }
 
+function photo(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
+function device_phone_mobile(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10.5 18.75a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z" />
+            <path fillRule="evenodd" d="M8.625.75A3.375 3.375 0 0 0 5.25 4.125v15.75a3.375 3.375 0 0 0 3.375 3.375h6.75a3.375 3.375 0 0 0 3.375-3.375V4.125A3.375 3.375 0 0 0 15.375.75h-6.75ZM7.5 4.125C7.5 3.504 8.004 3 8.625 3H9.75v.375c0 .621.504 1.125 1.125 1.125h2.25c.621 0 1.125-.504 1.125-1.125V3h1.125c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-6.75A1.125 1.125 0 0 1 7.5 19.875V4.125Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
+
+function lock_closed(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
 
 /**
  * Retrieves a svg icon. Available icons:
@@ -158,6 +184,9 @@ function credit_card(classNameData) {
  * - eye
  * - eye_slash
  * - credit-card
+ * - photo
+ * - device-phone-mobile
+ * - lock-closed
  *
  * All icons were retrieved from https://heroicons.com/solid (MIT license)
  *
@@ -167,13 +196,44 @@ function credit_card(classNameData) {
  * @constructor
  */
 export default function GetSVG(name, classNameData) {
-    // I shouldn't be using eval... But it's faster than writing a whole switch case
-    // TODO: Write as switch case
-
-    try {
-        return eval(name.replaceAll("-", "_") + "(\"" + classNameData + "\")");
-    } catch (e) {
-        console.log(e);
-        return <></>;
+    switch (name) {
+        case "envelope":
+            return envelope(classNameData);
+        case "key":
+            return key(classNameData);
+        case "user-circle":
+            return user_circle(classNameData);
+        case "question-mark-circle":
+            return question_mark_circle(classNameData);
+        case "user-plus":
+            return user_plus(classNameData);
+        case "arrow-right-end-on-rectangle":
+            return arrow_right_end_on_rectangle(classNameData);
+        case "chart-pie":
+            return chart_pie(classNameData);
+        case "inbox-arrow-down":
+            return inbox_arrow_down(classNameData);
+        case "banknotes":
+            return banknotes(classNameData);
+        case "inbox-stack":
+            return inbox_stack(classNameData);
+        case "arrow-trending-up":
+            return arrow_trending_up(classNameData);
+        case "currency-dollar":
+            return currency_dollar(classNameData);
+        case "pencil":
+            return pencil(classNameData);
+        case "eye":
+            return eye(classNameData);
+        case "eye-slash":
+            return eye_slash(classNameData);
+        case "credit-card":
+            return credit_card(classNameData);
+        case "photo":
+            return photo(classNameData);
+        case "device-phone-mobile":
+            return device_phone_mobile(classNameData);
+        case "lock-closed":
+            return lock_closed(classNameData);
     }
 }

@@ -1,27 +1,25 @@
+import MyAccount from "@/pages/screens/my_account";
 import HomePage from "@/pages/screens/home";
-import {useState} from "react";
 
-
-export default function AppContainer() {
-    const [titleText, setTitleText] = useState("FinBalanC++");
-    const [currentPage, setCurrentPage] = useState("")
-
-    let func = {
-        "loadHome": () => { setCurrentPage(""); }
-    };
-
+export default function AppContainer(page_name) {
     let page;
-    switch (currentPage) {
-        default:
+    let titleText;
+    switch (page_name) {
+        case "myAccount":
+            titleText = "Mi cuenta";
+            page = MyAccount();
+        break;
+        default: // home
+            titleText = "FinbalanC++";
             page = HomePage();
         break;
     }
 
-    let container = (
+    return (
         <div className="w-full h-full p-6 bg-primary-0 dark:bg-primary-1">
             <div>
                 <h2 className="text-3xl font-bold mb-6 text-accent-fg-0 dark:text-accent-fg-1">
-                    {titleText}
+                    { titleText }
                 </h2>
             </div>
             <div className="flex h-[92%]">
@@ -29,6 +27,4 @@ export default function AppContainer() {
             </div>
         </div>
     );
-
-    return [container, func];
 }

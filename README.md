@@ -55,11 +55,19 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.4
+- My account page
+  - _Not working yet_
+- All app colores are defined in the tailwind config file
+- Improved `IconButton` component
+- Now `Earnings.CardSection` component can receive custom parameters
+- Reworked `GetSVG`
+
 #### v0.0.3
 - Home page
   - _Not working yet_
 - Set minimum width and height for the app
-- App colors are now defined in tha tailwind config file
+- _Some_ app colors are now defined in the tailwind config file
 
 #### v0.0.2
 - Login, sign up and help page

@@ -1,9 +1,8 @@
 import GetSVG from "@/pages/svg";
 import {useState} from "react";
 
-
 function createButton(svg_name, svg_style, selected, action) {
-    let bg_style = selected ? "bg-sky-500 dark:bg-sky-800" : "";
+    let bg_style = selected ? "bg-accent-1 dark:bg-accent-2" : "";
     if (selected)
         svg_style += " text-accent-fg-1";
 
@@ -13,7 +12,6 @@ function createButton(svg_name, svg_style, selected, action) {
         </button>
     );
 }
-
 
 export default function Sidebar(login_mode, container_func) {
     const svg_style = "w-full h-full p-4 self-center text-accent-fg-0 dark:text-accent-fg-1";
@@ -42,9 +40,11 @@ export default function Sidebar(login_mode, container_func) {
         icons = [
             {"svg": "user-circle", "selected": buttonsState[0], "action": () => {
                 setButtonsState([true, false, false, false, false, false, false]);
+                container_func.loadMyAccount();
             }},
             {"svg": "chart-pie", "selected": buttonsState[1], "action": () => {
                 setButtonsState([false, true, false, false, false, false, false]);
+                container_func.loadHome();
             }},
             {"svg": "inbox-arrow-down", "selected": buttonsState[2], "action": () => {
                 setButtonsState([false, false,true, false, false, false, false]);

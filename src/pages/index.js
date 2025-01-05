@@ -7,14 +7,23 @@ export default function Home() {
     const [showLogin, setShowLogin] = useState(true);
     // const [showLogin, setShowLogin] = useState(false); // debug
 
+    const [currentPage, setCurrentPage] = useState(0);
+    let func = {
+        "loadHome": () => { setCurrentPage(0); },
+        "loadMyAccount": () => { setCurrentPage(1); }
+    };
+
     let login_container_func = LoginContainer(setShowLogin);
-    let app_container_func = AppContainer();
-    let sidebar = Sidebar(showLogin, showLogin ? login_container_func[1] : app_container_func[1]);
+    let sidebar = Sidebar(showLogin, showLogin ? login_container_func[1] : func);
+
+    let pages = [
+        AppContainer("home"), AppContainer("myAccount")
+    ];
 
     return (
         <main className="flex w-full h-dvh">
-            { showLogin ? login_container_func[0] : app_container_func[0] }
-            {sidebar}
+            { showLogin ? login_container_func[0] : pages[currentPage] }
+            { sidebar }
         </main>
     );
 }

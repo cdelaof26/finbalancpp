@@ -1,31 +1,35 @@
+import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
 import IconButton from "@/pages/screens/internal/icon_button";
 
-function QuickLookDiv(data) {
-    let dataAvailable = "color" in data && "caption" in data && "value" in data;
+function PreviewArticle(data) {
+    if (!("caption" in data))
+        return NothingToSee();
 
-    if (!dataAvailable)
+    const value_label = "value" in data ? <label> { data.value } </label> : null;
+    const color_badge = "color" in data ? <div className="w-6 h-6 rounded-full" style={{backgroundColor: data.color}}></div> : null;
+
+    if (value_label === null && color_badge === null) {
+        const caption_style = "captionClassName" in data ? data.captionClassName : "";
+        const article_style =  "articleClassName" in data ? data.articleClassName : "";
+
         return (
-            <article className="flex flex-col w-full p-2 text-center">
-                <label className="self-center text-2xl text-accent-dim-0 dark:text-accent-dim-1">
-                    ¡No hay nada que mostrar!
-                </label>
-                <label className="self-center mt-2 text-accent-dim-0 dark:text-accent-dim-1">
-                    No hay datos disponibles
+            <article className={"flex justify-center w-full p-3 rounded-xl bg-primary-0 dark:bg-primary-1 " + article_style}>
+                <label className={caption_style}>
+                    { data.caption }
                 </label>
             </article>
         );
+    }
 
     return (
         <article className="flex justify-between w-full p-3 rounded-xl bg-primary-0 dark:bg-primary-1">
             <div className="flex">
-                <div className="w-6 h-6 rounded-full" style={{backgroundColor: data.color}}></div>
+                { color_badge }
                 <label className="ps-3">
                     { data.caption }
                 </label>
             </div>
-            <label>
-                { data.value }
-            </label>
+            { value_label }
         </article>
     );
 }
@@ -42,7 +46,7 @@ export default function PreviewWidget(title, options) {
         if ("className" in options)
             class_data += options.className;
         if ("hideButton" in options && options.hideButton)
-            subtitle_buttons[0] = IconButton("eye-slash", "w-9 h-9");
+            subtitle_buttons[0] = IconButton({"icon": "eye-slash", "className": "w-9 h-9"});
         if ("maxItems" in options)
             max_items = options.maxItems;
         if ("data" in options)
@@ -67,7 +71,7 @@ export default function PreviewWidget(title, options) {
                     </div>
                 </div>
                 <div>
-                    { displayable_data.map((d) => QuickLookDiv(d)) }
+                    { displayable_data.map((d) => PreviewArticle(d)) }
                 </div>
             </div>
             { button }
