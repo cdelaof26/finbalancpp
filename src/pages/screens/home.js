@@ -1,7 +1,7 @@
 import Earnings from "@/pages/screens/internal/earnings";
 import PreviewWidget from "@/pages/screens/internal/preview_widget";
 
-export default function HomePage() {
+export default function HomePage(func) {
     const card_details = [
         {"name": "BBVA", "cardType": "0", "cardNumber": "0123 0123 0123 0123"},
         {"name": "Liverpool", "cardType": "1", "cardNumber": "0123 0123 0123 0123"},
@@ -36,7 +36,7 @@ export default function HomePage() {
 
     return (
         <div className="flex justify-center w-full">
-            { Earnings("16,680", card_details, true, false) }
+            { Earnings("16,680", card_details, true, false, func, false) }
             <div className="flex flex-col w-[40%] mx-4">
                 { PreviewWidget("Adeudos y deudas próximas", debt_options) }
                 { PreviewWidget("Presupuestos", {"className": "mt-2", "hideButton": true, "buttonCaption": "Ver todos los presupuestos"}) }

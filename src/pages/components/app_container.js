@@ -1,7 +1,9 @@
+import EarningsNCards from "@/pages/screens/earnings_n_cards";
 import MyAccount from "@/pages/screens/my_account";
 import HomePage from "@/pages/screens/home";
+import EarningsEditor from "@/pages/screens/earnings_editor";
 
-export default function AppContainer(page_name) {
+export default function AppContainer(page_name, func) {
     let page;
     let titleText;
     switch (page_name) {
@@ -9,9 +11,20 @@ export default function AppContainer(page_name) {
             titleText = "Mi cuenta";
             page = MyAccount();
         break;
+        case "earningsNCards":
+            titleText = "Mis ingresos y tarjetas";
+            page = EarningsNCards(func);
+        break;
+        case "earnings":
+            titleText = "Mis ingresos";
+            page = EarningsEditor(func);
+        break;
+        case "cards":
+            titleText = "Mis tarjetas";
+        break;
         default: // home
             titleText = "FinbalanC++";
-            page = HomePage();
+            page = HomePage(func);
         break;
     }
 

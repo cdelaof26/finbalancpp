@@ -6,7 +6,7 @@ function DataField(func, icon, value_set, editable, placeholder) {
     // TODO: Gotta fix all this junk code
     const is_title = func !== null;
     const label_style = "p-1 self-center " + (is_title ? "text-4xl ml-10 font-bold" : "text-2xl ps-3");
-    let input_style = label_style + " p-0.5 w-full rounded-lg bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 placeholder-accent-dim-0 dark:placeholder-accent-dim-1 focus:ring-accent-0 focus:border-accent-0";
+    let input_style = label_style + " p-0.5 w-[90%] rounded-lg bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 placeholder-accent-dim-0 dark:placeholder-accent-dim-1 focus:ring-accent-0 focus:border-accent-0";
 
     let field;
     if (!editable)

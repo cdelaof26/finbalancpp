@@ -1,5 +1,5 @@
 import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
-import IconButton from "@/pages/screens/internal/icon_button";
+import Title from "@/pages/screens/internal/title_with_buttons";
 
 function PreviewArticle(data) {
     if (!("caption" in data))
@@ -36,17 +36,16 @@ function PreviewArticle(data) {
 
 export default function PreviewWidget(title, options) {
     let class_data = "";
-    let subtitle_buttons = [];
+    let icons = [];
     let displayable_data = [{}];
     let max_items = 3;
     let button = null;
-
 
     if (options !== undefined) {
         if ("className" in options)
             class_data += options.className;
         if ("hideButton" in options && options.hideButton)
-            subtitle_buttons[0] = IconButton({"icon": "eye-slash", "className": "w-9 h-9"});
+            icons[0] = "eye-slash";
         if ("maxItems" in options)
             max_items = options.maxItems;
         if ("data" in options)
@@ -62,14 +61,7 @@ export default function PreviewWidget(title, options) {
     return (
         <section className={"flex flex-col justify-between h-1/2 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + class_data}>
             <div>
-                <div className="flex justify-between">
-                    <h1 className="self-center text-2xl font-bold mb-4">
-                        {title}
-                    </h1>
-                    <div>
-                        { subtitle_buttons.map((b) => b) }
-                    </div>
-                </div>
+                { Title({"title": title, "iconsClassName": "w-9 h-9", "icons": icons}) }
                 <div>
                     { displayable_data.map((d) => PreviewArticle(d)) }
                 </div>

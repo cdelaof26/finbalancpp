@@ -55,6 +55,11 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.5
+- Earnings page
+  - _Not working yet_
+  - Missing cards section
+
 #### v0.0.4
 - My account page
   - _Not working yet_

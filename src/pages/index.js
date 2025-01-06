@@ -7,23 +7,35 @@ export default function Home() {
     const [showLogin, setShowLogin] = useState(true);
     // const [showLogin, setShowLogin] = useState(false); // debug
 
+    const [earningsVisible, setEarningsVisible] = useState(false);
+
     const [currentPage, setCurrentPage] = useState(0);
+    const [subPage, setSubPage] = useState(0);
     let func = {
-        "loadHome": () => { setCurrentPage(0); },
-        "loadMyAccount": () => { setCurrentPage(1); }
+        "loadHome": () => { setSubPage(0); setCurrentPage(0); },
+        "loadMyAccount": () => { setSubPage(0); setCurrentPage(1); },
+        "loadEarningsNCards": (page) => { setSubPage(page); setCurrentPage(2 + page); },
+        "loadCards": () => { setSubPage(0); setCurrentPage(4); },
+
+        "subPage": subPage,
+        "earningsVisible": earningsVisible,
+        "setEarningsVisible": setEarningsVisible
     };
 
     let login_container_func = LoginContainer(setShowLogin);
-    let sidebar = Sidebar(showLogin, showLogin ? login_container_func[1] : func);
+    let sidebar_func = Sidebar(showLogin, showLogin ? login_container_func[1] : func);
+    func.setSidebarToggled = sidebar_func[1];
 
     let pages = [
-        AppContainer("home"), AppContainer("myAccount")
+        AppContainer("home", func), AppContainer("myAccount"),
+        AppContainer("earningsNCards", func), AppContainer("earnings", func),
+        AppContainer("cards", func)
     ];
 
     return (
         <main className="flex w-full h-dvh">
             { showLogin ? login_container_func[0] : pages[currentPage] }
-            { sidebar }
+            { sidebar_func[0] }
         </main>
     );
 }
