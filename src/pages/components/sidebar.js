@@ -60,6 +60,7 @@ export default function Sidebar(login_mode, container_func) {
             }},
             {"svg": "banknotes", "selected": buttonsState[3], "action": () => {
                 setButtonsState(toggleButton(7, 3));
+                container_func.loadDebitNDebt();
             }},
             {"svg": "inbox-stack", "selected": buttonsState[4], "action": () => {
                 setButtonsState(toggleButton(7, 4));

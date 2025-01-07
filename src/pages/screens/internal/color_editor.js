@@ -16,9 +16,9 @@ export default function ColorEditor(color, setColor) {
                 <span className="ps-3 pe-3 self-center">
                     Color #
                 </span>
-                <input onChange={(e) => setColor("#" + e.target.value)} type="text" value={color.replace("#", "")} className="self-center p-1.5 rounded-lg text-sm bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 placeholder-accent-dim-0 dark:placeholder-accent-dim-1 focus:ring-accent-0 focus:border-accent-0" placeholder="Código hex"/>
+                <input onChange={(e) => setColor("#" + e.target.value)} type="text" value={color.replace("#", "")} className="self-center w-1/3 p-1.5 rounded-lg text-sm bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 placeholder-accent-dim-0 dark:placeholder-accent-dim-1 focus:ring-accent-0 focus:border-accent-0" placeholder="Código hex"/>
             </div>
-            <button onClick={() => setColor(newColor())} className="self-center p-3 font-bold rounded-lg text-accent-fg-0 dark:text-accent-fg-1">
+            <button onClick={() => setColor(newColor())} className="self-center w-1/3 text-sm p-3 font-bold rounded-lg text-accent-fg-0 dark:text-accent-fg-1">
                 Nuevo color
             </button>
         </div>

@@ -55,6 +55,10 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.6
+- Cards, debit and debt page
+  - _Not working yet_
+
 #### v0.0.5
 - Earnings page
   - _Not working yet_

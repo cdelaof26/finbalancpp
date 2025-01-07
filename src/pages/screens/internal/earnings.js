@@ -73,19 +73,19 @@ export default function Earnings(earnings, card_details, show_cards, new_card_mo
     });
 
     return (
-        <section className={"flex flex-col justify-between w-[40%] p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + (show_cards ? "" : "h-max")}>
+        <div className={"flex flex-col justify-between w-[40%] p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + (show_cards ? "" : "h-max")}>
             <div className={show_cards ? "h-[90%]" : ""}>
-                <section>
+                <div>
                     { title }
                     <div className="flex flex-col my-4 p-3 w-full rounded-xl bg-primary-0 dark:bg-primary-1">
                         <label className={"self-center text-3xl " + (func.earningsVisible ? "" : "font-bold")}>
                             { func.earningsVisible ? "$" + earnings : "****" }
                         </label>
                     </div>
-                </section>
+                </div>
                 { show_cards ? CardSection(card_details) : null }
             </div>
             { action_button }
-        </section>
+        </div>
     );
 }

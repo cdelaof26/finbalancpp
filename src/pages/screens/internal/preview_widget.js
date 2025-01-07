@@ -13,8 +13,8 @@ function PreviewArticle(data) {
         const article_style =  "articleClassName" in data ? data.articleClassName : "";
 
         return (
-            <article className={"flex justify-center w-full p-3 rounded-xl bg-primary-0 dark:bg-primary-1 " + article_style}>
-                <label className={caption_style}>
+            <article className={"flex w-full p-3 rounded-xl bg-primary-0 dark:bg-primary-1 " + article_style}>
+                <label className={" " + caption_style + (data.caption.length > 29 ? " text-sm" : "")}>
                     { data.caption }
                 </label>
             </article>
@@ -36,6 +36,7 @@ function PreviewArticle(data) {
 
 export default function PreviewWidget(title, options) {
     let class_data = "";
+    let height = " h-1/2";
     let icons = [];
     let displayable_data = [{}];
     let max_items = 3;
@@ -44,6 +45,8 @@ export default function PreviewWidget(title, options) {
     if (options !== undefined) {
         if ("className" in options)
             class_data += options.className;
+        if ("doNotLimitHeight" in options)
+            height = options.doNotLimitHeight ? "" : height;
         if ("hideButton" in options && options.hideButton)
             icons[0] = "eye-slash";
         if ("maxItems" in options)
@@ -52,14 +55,14 @@ export default function PreviewWidget(title, options) {
             displayable_data = options.data.slice(0, max_items);
         if ("buttonCaption" in options)
             button = (
-                <button className="self-center w-full p-3 font-bold rounded-lg bg-primary-0 dark:bg-primary-1 text-accent-fg-0 dark:text-accent-fg-1" onClick={"buttonAction" in options ? options.buttonAction : null}>
+                <button className="self-center truncate w-full p-3 font-bold rounded-lg bg-primary-0 dark:bg-primary-1 text-accent-fg-0 dark:text-accent-fg-1" onClick={"buttonAction" in options ? options.buttonAction : null}>
                     { options.buttonCaption }
                 </button>
             )
     }
 
     return (
-        <section className={"flex flex-col justify-between h-1/2 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + class_data}>
+        <section className={"flex flex-col justify-between p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + class_data + height}>
             <div>
                 { Title({"title": title, "iconsClassName": "w-9 h-9", "icons": icons}) }
                 <div>

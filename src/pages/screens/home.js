@@ -30,7 +30,7 @@ export default function HomePage(func) {
     const tips_options = {
         "className": "mb-2",
         "data": tips_example,
-        "maxItems": 2,
+        "maxItems": 1,
         "buttonCaption": "Ver más tips"
     };
 
