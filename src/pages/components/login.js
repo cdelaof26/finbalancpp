@@ -1,7 +1,8 @@
 import GetSVG from "@/pages/svg";
 import { Input } from "postcss";
 import { useRef } from "react";
-import User from "../../models/user.js"
+import User from "../../models/user.js";
+import { handleLogin, handleRegistration } from "../../services/api.js";
 
 function createFormField(data, padding, ref) {
   let placeholder = data.placeholder;
@@ -30,7 +31,7 @@ function LogForm(title, str_submit, form_data, padding, submit_action) {
         <h1 className="self-center text-3xl font-bold text-accent-fg-0 dark:text-accent-fg-1">
           {title}
         </h1>
-        {form_data.map((d, index) => createFormField(d, padding, d.ref))}
+        {form_data.map((d) => createFormField(d, padding, d.ref))}
       </form>
       <button
         onClick={submit_action}
@@ -40,10 +41,6 @@ function LogForm(title, str_submit, form_data, padding, submit_action) {
       </button>
     </>
   );
-}
-function validateUser(data) {
-  console.log(data);
-  return 1;
 }
 export default function UserPrompt(login_mode, container_func) {
   let title = login_mode ? "Iniciar sesión" : "Registrarse";
@@ -56,28 +53,37 @@ export default function UserPrompt(login_mode, container_func) {
   const passwordRef = useRef();
   const usernameRef = useRef();
   const confirmPasswordRef = useRef();
-  
+
   const submit_action = login_mode
-  ? () => {
-      const email = emailRef.current.value;
-      const password = passwordRef.current.value;
-      const formValues = { email, password };
-      const prueba = new User (formValues);
-      if (prueba.validateData(login_mode).isValid) container_func(false);
-      
-    }
+    ? () => {
+        const email = emailRef.current.value;
+        const password = passwordRef.current.value;
+        const formValues = { email, password };
+        const prueba = new User(formValues);
+        console.log(prueba.getData());
+        console.log(prueba.validateData(login_mode).isValid);
+        if (prueba.validateData(login_mode).isValid) {
+          const login = handleLogin(formValues)
+            .then((result) => {
+              if (result) {
+                container_func(false);
+              }
+            })
+            .catch((error) => {
+              console.error("Error en el inicio de sesión:", error);
+            });
+        }
+      }
     : () => {
         const username = usernameRef.current.value;
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         const confirmPassword = confirmPasswordRef.current.value;
         const formValues = { username, email, password, confirmPassword };
-        const prueba = new User (formValues);
-        if (prueba.validateData(login_mode).isValid) null; else{
-            console.log("errores:", prueba.validateData(login_mode).errors);
-        };
-    };
-    
+        const prueba = new User(formValues);
+        if (prueba.validateData(login_mode).isValid) null;
+      };
+
   if (login_mode)
     form_elements = [
       {
