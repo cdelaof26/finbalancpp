@@ -27,7 +27,7 @@ export default function Title(options) {
     });
 
     return (
-        <div className="flex justify-between">
+        <div className="flex justify-between w-full self-center">
             <h1 className={"self-center font-bold mb-4 " + title_class_data}>
                 { options.title }
             </h1>

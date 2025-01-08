@@ -187,6 +187,38 @@ function check(classNameData) {
     );
 }
 
+function exclamation_triangle(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fillRule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
+function x_mark(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
+function shield_check(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fillRule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Zm3.094 8.016a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
+function arrow_trending_down(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fillRule="evenodd" d="M1.72 5.47a.75.75 0 0 1 1.06 0L9 11.69l3.756-3.756a.75.75 0 0 1 .985-.066 12.698 12.698 0 0 1 4.575 6.832l.308 1.149 2.277-3.943a.75.75 0 1 1 1.299.75l-3.182 5.51a.75.75 0 0 1-1.025.275l-5.511-3.181a.75.75 0 0 1 .75-1.3l3.943 2.277-.308-1.149a11.194 11.194 0 0 0-3.528-5.617l-3.809 3.81a.75.75 0 0 1-1.06 0L1.72 6.53a.75.75 0 0 1 0-1.061Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
 /**
  * Retrieves a svg icon. Available icons:
  *
@@ -212,6 +244,9 @@ function check(classNameData) {
  * - plus
  * - trash
  * - check
+ * - exclamation-triangle
+ * - x-mark
+ * - arrow-trending-down
  *
  * All icons were retrieved from https://heroicons.com/solid (MIT license)
  *
@@ -266,5 +301,13 @@ export default function GetSVG(name, classNameData) {
             return trash(classNameData);
         case "check":
             return check(classNameData);
+        case "exclamation-triangle":
+            return exclamation_triangle(classNameData);
+        case "x-mark":
+            return x_mark(classNameData);
+        case "shield-check":
+            return shield_check(classNameData);
+        case "arrow-trending-down":
+            return arrow_trending_down(classNameData);
     }
 }

@@ -18,7 +18,8 @@ export default function HomePage(func) {
     const debt_options = {
         "className": "mb-2",
         "data": debt_example,
-        "buttonCaption": "Ver todos los adeudos y deudas"
+        "buttonCaption": "Ver todos los adeudos y deudas",
+        "buttonAction": () => { func.setSidebarToggled(3); func.loadDebitNDebt() }
     };
 
     const tips_example = [

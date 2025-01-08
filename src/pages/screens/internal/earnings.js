@@ -73,7 +73,7 @@ export default function Earnings(earnings, card_details, show_cards, new_card_mo
     });
 
     return (
-        <div className={"flex flex-col justify-between w-[40%] p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + (show_cards ? "" : "h-max")}>
+        <div className={"flex flex-col justify-between p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + (show_cards ? "w-[40%]" : "h-max")}>
             <div className={show_cards ? "h-[90%]" : ""}>
                 <div>
                     { title }

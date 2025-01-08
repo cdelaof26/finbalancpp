@@ -1,5 +1,6 @@
 import GetSVG from "@/pages/svg";
 import {useState} from "react";
+import { exit } from '@tauri-apps/plugin-process';
 
 function createButton(svg_name, svg_style, selected, action) {
     let bg_style = selected ? "bg-accent-1 dark:bg-accent-2" : "";
@@ -64,12 +65,15 @@ export default function Sidebar(login_mode, container_func) {
             }},
             {"svg": "inbox-stack", "selected": buttonsState[4], "action": () => {
                 setButtonsState(toggleButton(7, 4));
+                container_func.loadBudgets();
             }},
             {"svg": "arrow-trending-up", "selected": buttonsState[5], "action": () => {
                 setButtonsState(toggleButton(7, 5));
+                    container_func.loadInvestments();
             }},
             {"svg": "currency-dollar", "selected": buttonsState[6], "action": () => {
                 setButtonsState(toggleButton(7, 6));
+                container_func.loadTips();
             }},
         ];
     }
@@ -80,7 +84,7 @@ export default function Sidebar(login_mode, container_func) {
                 { icons.map((i) => createButton(i.svg, svg_style, i.selected, i.action)) }
             </div>
 
-            { createButton("arrow-right-end-on-rectangle", svg_style, false) }
+            { createButton("arrow-right-end-on-rectangle", svg_style, false, async () => { await exit(); }) }
         </nav>
     );
 

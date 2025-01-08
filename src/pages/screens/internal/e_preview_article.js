@@ -45,7 +45,7 @@ export default function EPreviewArticle(data) {
                     { label }
                 </div>
                 <div className="flex">
-                    <label className="self-center">
+                    <label className={"self-center transition-[opacity] duration-300 " + (!editable ? "opacity-100" : "opacity-0")}>
                         { ("indicator" in data ? data.indicator : "") + " " + format_money(data.value) }
                     </label>
                     <div className="flex">

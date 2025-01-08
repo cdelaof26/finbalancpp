@@ -34,7 +34,7 @@ npm install
 npm run dev
 
 # Or Run using Tauri (desktop app)
-npm run tauri run
+npm run tauri dev
 ```
 
 ### Building from source
@@ -53,7 +53,15 @@ npm install
 npm run tauri build
 ```
 
+> [!NOTE]
+> `npm run build` and `npm run tauri build` seems 
+> broken due bad data handling since v0.0.2.
+
 ### Versioning
+
+#### v0.0.7
+- Budgets, investments and tips pages
+  - _Not working yet_
 
 #### v0.0.6
 - Cards, debit and debt page

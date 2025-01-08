@@ -4,6 +4,9 @@ import HomePage from "@/pages/screens/home";
 import EarningsEditor from "@/pages/screens/earnings_editor";
 import Cards from "@/pages/screens/cards";
 import DebitNDebt from "@/pages/screens/debit_n_debt";
+import Budgets from "@/pages/screens/budgets";
+import Investments from "@/pages/screens/investments";
+import Tips from "@/pages/screens/tips";
 
 export default function AppContainer(page_name, func) {
     let page;
@@ -28,6 +31,18 @@ export default function AppContainer(page_name, func) {
         case "debitNDebt":
             titleText = "Mis adeudos y deudas";
             page = DebitNDebt();
+        break;
+        case "budgets":
+            titleText = "Mis presupuestos";
+            page = Budgets(func);
+        break;
+        case "investments":
+            titleText = "Mis inversiones";
+            page = Investments();
+        break;
+        case "tips":
+            titleText = "Tips";
+            page = Tips();
         break;
         default: // home
             titleText = "FinbalanC++";

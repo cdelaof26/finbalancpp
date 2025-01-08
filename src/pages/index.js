@@ -4,12 +4,12 @@ import Sidebar from "@/pages/components/sidebar";
 import {useState} from "react";
 
 export default function Home() {
-    // const [showLogin, setShowLogin] = useState(true);
-    const [showLogin, setShowLogin] = useState(false); // debug
+    const [showLogin, setShowLogin] = useState(true);
+    // const [showLogin, setShowLogin] = useState(false); // debug
 
     const [earningsVisible, setEarningsVisible] = useState(false);
 
-    const [currentPage, setCurrentPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(0);
     const [subPage, setSubPage] = useState(0);
     let func = {
         "loadHome": () => { setSubPage(0); setCurrentPage(0); },
@@ -17,6 +17,9 @@ export default function Home() {
         "loadEarningsNCards": (page) => { setSubPage(page); setCurrentPage(2 + page); },
         "loadCards": () => { setSubPage(0); setCurrentPage(4); },
         "loadDebitNDebt": () => { setSubPage(0); setCurrentPage(5); },
+        "loadBudgets": () => { setSubPage(0); setCurrentPage(6) },
+        "loadInvestments": () => { setSubPage(0); setCurrentPage(7) },
+        "loadTips": () => { setSubPage(0); setCurrentPage(8) },
 
         "subPage": subPage,
         "earningsVisible": earningsVisible,
@@ -30,7 +33,9 @@ export default function Home() {
     let pages = [
         AppContainer("home", func), AppContainer("myAccount"),
         AppContainer("earningsNCards", func), AppContainer("earnings", func),
-        AppContainer("cards", func), AppContainer("debitNDebt")
+        AppContainer("cards", func), AppContainer("debitNDebt"),
+        AppContainer("budgets", func), AppContainer("investments"),
+        AppContainer("tips")
     ];
 
     return (
