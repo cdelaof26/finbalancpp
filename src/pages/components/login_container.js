@@ -1,5 +1,4 @@
 import UserPrompt from "@/pages/components/login";
-import {useState} from "react";
 
 function showHelpSection() {
     return (
@@ -14,16 +13,8 @@ function showHelpSection() {
     );
 }
 
-export default function LoginContainer(setShowLogin) {
-    const [helpSectionOpen, setHelpSectionOpen] = useState(false);
-    const [loginOpen, setLoginOpen] = useState(true);
-
-    let func = {
-        "setLoginOpen": setLoginOpen,
-        "setHelpSectionOpen": setHelpSectionOpen
-    };
-
-    let container = (
+export default function LoginContainer({helpSectionOpen, loginOpen, setShowLogin}) {
+    return (
         <div className="w-full h-full p-6 bg-gradient-to-tl from-cyan-500 to-blue-500 dark:from-sky-800 dark:to-blue-950">
             <div>
                 <h1 className="text-5xl font-bold text-accent-fg-1">
@@ -38,6 +29,4 @@ export default function LoginContainer(setShowLogin) {
             </div>
         </div>
     );
-
-    return [container, func];
 }

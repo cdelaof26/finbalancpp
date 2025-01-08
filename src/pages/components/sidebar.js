@@ -1,6 +1,5 @@
 import GetSVG from "@/pages/svg";
 import {useState} from "react";
-import { exit } from '@tauri-apps/plugin-process';
 
 function createButton(svg_name, svg_style, selected, action) {
     let bg_style = selected ? "bg-accent-1 dark:bg-accent-2" : "";
@@ -9,7 +8,7 @@ function createButton(svg_name, svg_style, selected, action) {
 
     return (
         <button onClick={action} className={"flex justify-center w-[70px] h-[70px] self-center " + bg_style}>
-            { GetSVG(svg_name, svg_style) }
+            <GetSVG name={svg_name} classNameData={svg_style}></GetSVG>
         </button>
     );
 }

@@ -1,7 +1,7 @@
 import Earnings from "@/pages/screens/internal/earnings";
 import PreviewWidget from "@/pages/screens/internal/preview_widget";
 
-export default function HomePage(func) {
+export default function HomePage({func}) {
     const card_details = [
         {"name": "BBVA", "cardType": "0", "cardNumber": "0123 0123 0123 0123"},
         {"name": "Liverpool", "cardType": "1", "cardNumber": "0123 0123 0123 0123"},
@@ -15,7 +15,7 @@ export default function HomePage(func) {
         { "color": "#E44F8F", "caption": "Pagar agua", "value": "12/12/2025" },
     ];
 
-    const debt_options = {
+    const debt_data = {
         "className": "mb-2",
         "data": debt_example,
         "buttonCaption": "Ver todos los adeudos y deudas",
@@ -32,19 +32,20 @@ export default function HomePage(func) {
         "className": "mb-2",
         "data": tips_example,
         "maxItems": 1,
-        "buttonCaption": "Ver más tips"
+        "buttonCaption": "Ver más tips",
+        "buttonAction": () => { func.setSidebarToggled(6); func.loadTips() }
     };
 
     return (
         <div className="flex justify-center w-full">
-            { Earnings("16,680", card_details, true, false, func, false) }
+            <Earnings earnings={"16680"} cardDetails={card_details} func={func}></Earnings>
             <div className="flex flex-col w-[40%] mx-4">
-                { PreviewWidget("Adeudos y deudas próximas", debt_options) }
-                { PreviewWidget("Presupuestos", {"className": "mt-2", "hideButton": true, "buttonCaption": "Ver todos los presupuestos"}) }
+                <PreviewWidget title="Adeudos y deudas próximas" data={debt_data}></PreviewWidget>
+                <PreviewWidget title="Presupuestos" data={ {"className": "mt-2", "icons": ["eye-slash"], "buttonCaption": "Ver todos los presupuestos", "buttonAction": () => { func.setSidebarToggled(4); func.loadBudgets() } } }></PreviewWidget>
             </div>
             <div className="flex flex-col w-[20%]">
-                { PreviewWidget("Tips", tips_options) }
-                { PreviewWidget("Inversiones", {"className": "mt-2", "buttonCaption": "Ver mis inversiones"}) }
+                <PreviewWidget title="Tips" data={tips_options}></PreviewWidget>
+                <PreviewWidget title="Inversiones" data={ {"className": "mt-2", "buttonCaption": "Ver mis inversiones", "buttonAction": () => { func.setSidebarToggled(5); func.loadInvestments() } } }></PreviewWidget>
             </div>
         </div>
     );

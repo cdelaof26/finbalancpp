@@ -1,21 +1,21 @@
 import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
 import Title from "@/pages/screens/internal/title_with_buttons";
 
-function PreviewArticle(data) {
-    if (!("caption" in data))
-        return NothingToSee();
+function PreviewArticle({
+        caption = null, value = null, color = null,
+        captionClassName = "", articleClassName = ""
+}) {
+    if (caption === null)
+        return <NothingToSee></NothingToSee>;
 
-    const value_label = "value" in data ? <label> { data.value } </label> : null;
-    const color_badge = "color" in data ? <div className="w-6 h-6 rounded-full" style={{backgroundColor: data.color}}></div> : null;
+    const value_label = value !== null ? <label> { value } </label> : null;
+    const color_badge = color !== null ? <div className="w-6 h-6 rounded-full" style={{backgroundColor: color}}></div> : null;
 
     if (value_label === null && color_badge === null) {
-        const caption_style = "captionClassName" in data ? data.captionClassName : "";
-        const article_style =  "articleClassName" in data ? data.articleClassName : "";
-
         return (
-            <article className={"flex w-full p-3 rounded-xl bg-primary-0 dark:bg-primary-1 " + article_style}>
-                <label className={" " + caption_style + (data.caption.length > 29 ? " text-sm" : "")}>
-                    { data.caption }
+            <article className={"flex w-full p-3 rounded-xl bg-primary-0 dark:bg-primary-1 " + articleClassName}>
+                <label className={" " + captionClassName + (caption.length > 24 ? " text-sm" : "")}>
+                    { caption }
                 </label>
             </article>
         );
@@ -26,7 +26,7 @@ function PreviewArticle(data) {
             <div className="flex">
                 { color_badge }
                 <label className="ps-3">
-                    { data.caption }
+                    { caption }
                 </label>
             </div>
             { value_label }
@@ -34,7 +34,7 @@ function PreviewArticle(data) {
     );
 }
 
-export default function PreviewWidget(title, options) {
+export default function PreviewWidget({title, data = null}) {
     let class_data = "";
     let height = " h-1/2";
     let icons = [];
@@ -42,29 +42,29 @@ export default function PreviewWidget(title, options) {
     let max_items = 3;
     let button = null;
 
-    if (options !== undefined) {
-        if ("className" in options)
-            class_data += options.className;
-        if ("doNotLimitHeight" in options)
-            height = options.doNotLimitHeight ? "" : height;
-        if ("hideButton" in options && options.hideButton)
-            icons[0] = "eye-slash";
-        if ("maxItems" in options)
-            max_items = options.maxItems;
-        if ("data" in options)
-            displayable_data = options.data.slice(0, max_items);
-        if ("buttonCaption" in options)
+    if (data !== null) {
+        if ("className" in data)
+            class_data += data.className;
+        if ("doNotLimitHeight" in data)
+            height = data.doNotLimitHeight ? "" : height;
+        if ("icons" in data)
+            icons = data.icons;
+        if ("maxItems" in data)
+            max_items = data.maxItems;
+        if ("data" in data)
+            displayable_data = data.data.slice(0, max_items);
+        if ("buttonCaption" in data)
             button = (
-                <button className="self-center truncate w-full p-3 font-bold rounded-lg bg-primary-0 dark:bg-primary-1 text-accent-fg-0 dark:text-accent-fg-1" onClick={"buttonAction" in options ? options.buttonAction : null}>
-                    { options.buttonCaption }
+                <button className="self-center truncate w-full p-3 font-bold rounded-lg bg-primary-0 dark:bg-primary-1 text-accent-fg-0 dark:text-accent-fg-1" onClick={"buttonAction" in data ? data.buttonAction : null}>
+                    { data.buttonCaption }
                 </button>
-            )
+            );
     }
 
     return (
         <section className={"flex flex-col justify-between p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + class_data + height}>
             <div>
-                { Title({"title": title, "iconsClassName": "w-9 h-9", "icons": icons}) }
+                <Title title={title} icons={icons}></Title>
                 <div>
                     { displayable_data.map((d) => PreviewArticle(d)) }
                 </div>

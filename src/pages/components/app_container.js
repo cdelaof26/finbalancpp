@@ -1,6 +1,6 @@
-import EarningsNCards from "@/pages/screens/earnings_n_cards";
 import MyAccount from "@/pages/screens/my_account";
 import HomePage from "@/pages/screens/home";
+import EarningsNCards from "@/pages/screens/earnings_n_cards";
 import EarningsEditor from "@/pages/screens/earnings_editor";
 import Cards from "@/pages/screens/cards";
 import DebitNDebt from "@/pages/screens/debit_n_debt";
@@ -8,45 +8,45 @@ import Budgets from "@/pages/screens/budgets";
 import Investments from "@/pages/screens/investments";
 import Tips from "@/pages/screens/tips";
 
-export default function AppContainer(page_name, func) {
+export default function AppContainer({page_name, func = null}) {
     let page;
     let titleText;
     switch (page_name) {
         case "myAccount":
             titleText = "Mi cuenta";
-            page = MyAccount();
+            page = <MyAccount></MyAccount>;
         break;
         case "earningsNCards":
             titleText = "Mis ingresos y tarjetas";
-            page = EarningsNCards(func);
+            page = <EarningsNCards func={func}></EarningsNCards>;
         break;
         case "earnings":
             titleText = "Mis ingresos";
-            page = EarningsEditor(func);
+            page = <EarningsEditor func={func}></EarningsEditor>;
         break;
         case "cards":
             titleText = "Mis tarjetas";
-            page = Cards(func);
+            page = <Cards func={func}></Cards>;
         break;
         case "debitNDebt":
             titleText = "Mis adeudos y deudas";
-            page = DebitNDebt();
+            page = <DebitNDebt func={func}></DebitNDebt>;
         break;
         case "budgets":
             titleText = "Mis presupuestos";
-            page = Budgets(func);
+            page = <Budgets func={func}></Budgets>;
         break;
         case "investments":
             titleText = "Mis inversiones";
-            page = Investments();
+            page = <Investments></Investments>;
         break;
         case "tips":
             titleText = "Tips";
-            page = Tips();
+            page = <Tips></Tips>
         break;
         default: // home
             titleText = "FinbalanC++";
-            page = HomePage(func);
+            page = <HomePage func={func}></HomePage>;
         break;
     }
 

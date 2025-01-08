@@ -2,7 +2,7 @@ import NumericValueEditor from "@/pages/screens/internal/numeric_value_editor";
 import GetSVG from "@/pages/svg";
 import {useState} from "react";
 
-export default function CardEditor(name, card_number, card_type) {
+export default function CardEditor({name = "", card_number = "", card_type = "0"}) {
     const [isDebt, setIsDebt] = useState(card_type === "1");
 
     return (
@@ -20,13 +20,13 @@ export default function CardEditor(name, card_number, card_type) {
                 </label>
                 <div className="flex justify-evenly w-1/2">
                     <button onClick={() => setIsDebt(false)} className={"flex flex-col justify-center w-28 h-28 rounded-2xl border-accent-fg-0 dark:border-accent-fg-1 " + (!isDebt ? "bg-accent-0" : "border")}>
-                        { GetSVG("credit-card", "w-12 h-12 self-center " + (!isDebt ? "text-accent-fg-1" : "")) }
+                        <GetSVG name="credit-card" classNameData={"w-12 h-12 self-center " + (!isDebt ? "text-accent-fg-1" : "")}></GetSVG>
                         <label className={"self-center " + (!isDebt ? "font-bold text-accent-fg-1" : "")}>
                             Crédito
                         </label>
                     </button>
                     <button onClick={() => setIsDebt(true)} className={"flex flex-col justify-center w-28 h-28 rounded-2xl border-accent-fg-0 dark:border-accent-fg-1 " + (isDebt ? "bg-accent-0" : "border")}>
-                        { GetSVG("banknotes", "w-12 h-12 self-center " + (isDebt ? "text-accent-fg-1" : "")) }
+                        <GetSVG name="banknotes" classNameData={"w-12 h-12 self-center " + (isDebt ? "text-accent-fg-1" : "")}></GetSVG>
                         <label className={"self-center " + (isDebt ? "font-bold text-accent-fg-1" : "")}>
                             Débito
                         </label>
@@ -49,7 +49,7 @@ export default function CardEditor(name, card_number, card_type) {
                 <label className="text-lg">
                     { !isDebt ? "Crédito utilizado" : "Fondos" }
                 </label>
-                { NumericValueEditor() }
+                <NumericValueEditor showAll={true}></NumericValueEditor>
             </div>
         </div>
     );

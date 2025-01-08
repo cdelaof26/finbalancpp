@@ -255,7 +255,7 @@ function arrow_trending_down(classNameData) {
  * @returns {JSX.Element}
  * @constructor
  */
-export default function GetSVG(name, classNameData) {
+export default function GetSVG({name, classNameData}) {
     switch (name) {
         case "envelope":
             return envelope(classNameData);

@@ -8,7 +8,7 @@ en un solo lugar de manera organizada.
 Esta aplicación utiliza las siguientes tecnologías:
 - HTML
 - [React](https://react.dev)
-  - [NextJS](https://nextjs.org)
+  - [Next.js](https://nextjs.org)
 - [TailwindCSS](https://tailwindcss.com)
 - [Tauri](https://v2.tauri.app)
 
@@ -18,6 +18,9 @@ At the moment no license is present.
 All rights reserved [@cdelaof26](https://github.com/cdelaof26/)
 
 ### Development
+
+> [!NOTE]
+> Tauri requires Rust installed
 
 ```bash
 # Clone this repo
@@ -53,11 +56,11 @@ npm install
 npm run tauri build
 ```
 
-> [!NOTE]
-> `npm run build` and `npm run tauri build` seems 
-> broken due bad data handling since v0.0.2.
-
 ### Versioning
+
+#### v0.0.8
+- Massive rewrite to fix `npm run build`
+- Fixed links in `home` and `debit_n_debt`
 
 #### v0.0.7
 - Budgets, investments and tips pages

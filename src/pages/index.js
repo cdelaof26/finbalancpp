@@ -5,13 +5,19 @@ import {useState} from "react";
 
 export default function Home() {
     const [showLogin, setShowLogin] = useState(true);
-    // const [showLogin, setShowLogin] = useState(false); // debug
+
+    const [helpSectionOpen, setHelpSectionOpen] = useState(false);
+    const [loginOpen, setLoginOpen] = useState(true);
 
     const [earningsVisible, setEarningsVisible] = useState(false);
+    const [cardNumberVisible, setCardNumberVisible] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(0);
     const [subPage, setSubPage] = useState(0);
     let func = {
+        "setLoginOpen": setLoginOpen,
+        "setHelpSectionOpen": setHelpSectionOpen,
+
         "loadHome": () => { setSubPage(0); setCurrentPage(0); },
         "loadMyAccount": () => { setSubPage(0); setCurrentPage(1); },
         "loadEarningsNCards": (page) => { setSubPage(page); setCurrentPage(2 + page); },
@@ -23,24 +29,30 @@ export default function Home() {
 
         "subPage": subPage,
         "earningsVisible": earningsVisible,
-        "setEarningsVisible": setEarningsVisible
+        "setEarningsVisible": setEarningsVisible,
+        "cardNumberVisible": cardNumberVisible,
+        "setCardNumberVisible": setCardNumberVisible
     };
 
-    let login_container_func = LoginContainer(setShowLogin);
-    let sidebar_func = Sidebar(showLogin, showLogin ? login_container_func[1] : func);
+    let login = <LoginContainer helpSectionOpen={helpSectionOpen} loginOpen={loginOpen} setShowLogin={setShowLogin}></LoginContainer>
+    let sidebar_func = Sidebar(showLogin, func);
     func.setSidebarToggled = sidebar_func[1];
 
     let pages = [
-        AppContainer("home", func), AppContainer("myAccount"),
-        AppContainer("earningsNCards", func), AppContainer("earnings", func),
-        AppContainer("cards", func), AppContainer("debitNDebt"),
-        AppContainer("budgets", func), AppContainer("investments"),
-        AppContainer("tips")
+        <AppContainer page_name={"home"} func={func}></AppContainer>,
+        <AppContainer page_name={"myAccount"}></AppContainer>,
+        <AppContainer page_name={"earningsNCards"} func={func}></AppContainer>,
+        <AppContainer page_name={"earnings"} func={func}></AppContainer>,
+        <AppContainer page_name={"cards"} func={func}></AppContainer>,
+        <AppContainer page_name={"debitNDebt"} func={func}></AppContainer>,
+        <AppContainer page_name={"budgets"} func={func}></AppContainer>,
+        <AppContainer page_name={"investments"}></AppContainer>,
+        <AppContainer page_name={"tips"}></AppContainer>
     ];
 
     return (
         <main className="flex w-full h-dvh">
-            { showLogin ? login_container_func[0] : pages[currentPage] }
+            { showLogin ? login : pages[currentPage] }
             { sidebar_func[0] }
         </main>
     );

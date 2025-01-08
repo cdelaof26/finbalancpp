@@ -8,7 +8,10 @@ function newColor() {
     return "#" + colors.join("");
 }
 
-export default function ColorEditor(color, setColor) {
+export default function ColorEditor({color, setColor}) {
+    if (color === null || color === undefined)
+        return;
+
     return (
         <div className="flex justify-between">
             <div className="flex self-center">
