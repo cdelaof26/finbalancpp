@@ -1,6 +1,7 @@
 import GetSVG from "@/pages/svg";
 import { Input } from "postcss";
 import { useRef } from "react";
+import User from "../../models/user.js"
 
 function createFormField(data, padding, ref) {
   let placeholder = data.placeholder;
@@ -55,23 +56,28 @@ export default function UserPrompt(login_mode, container_func) {
   const passwordRef = useRef();
   const usernameRef = useRef();
   const confirmPasswordRef = useRef();
-
+  
   const submit_action = login_mode
-    ? () => {
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-        const formValues = { email, password };
-        if (validateUser(formValues)) container_func(false);
-      }
+  ? () => {
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      const formValues = { email, password };
+      const prueba = new User (formValues);
+      if (prueba.validateData(login_mode).isValid) container_func(false);
+      
+    }
     : () => {
         const username = usernameRef.current.value;
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         const confirmPassword = confirmPasswordRef.current.value;
         const formValues = { username, email, password, confirmPassword };
-        if (validateUser(formValues)) null;
-      };
-
+        const prueba = new User (formValues);
+        if (prueba.validateData(login_mode).isValid) null; else{
+            console.log("errores:", prueba.validateData(login_mode).errors);
+        };
+    };
+    
   if (login_mode)
     form_elements = [
       {
