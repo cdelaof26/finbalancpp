@@ -54,18 +54,3 @@ export default class User {
     };
   }
 }
-
-// const persona = new User({
-//   username: "jaime",
-//   email: "jaime@gmail.com.ipn",
-//   password: "123Apepe",
-//   confirmPassword: "123Apepe",
-// });
-
-// console.log(persona.validateData(false));
-// const data = {
-//   username: "ivan",
-//   email: "ivan@gmil.com",
-//   password: "pass",
-//   confirmPassword: "pass",
-// };

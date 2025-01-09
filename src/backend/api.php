@@ -98,4 +98,4 @@ function loginUser($data, $pdo) {
         echo json_encode(["success" => false, "message" => "Error al iniciar sesión."]);
     }
 }
-?>Z`
+?>

@@ -1,6 +1,6 @@
 <?php
     const HOST = 'localhost';
-    const DBNAME = 'fibalance';
+    const DBNAME = 'finbalancpp';
     const USER = 'root';
     const PASSWORD = '';
     const UTF8 ="utf8";

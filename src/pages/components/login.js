@@ -3,7 +3,7 @@ import { Input } from "postcss";
 import { useRef } from "react";
 import User from "../../models/user.js";
 import { handleLogin, handleRegistration } from "../../services/api.js";
-
+import axios from "axios";
 function createFormField(data, padding, ref) {
   let placeholder = data.placeholder;
   let type = data.type;
@@ -60,18 +60,22 @@ export default function UserPrompt(login_mode, container_func) {
         const password = passwordRef.current.value;
         const formValues = { email, password };
         const prueba = new User(formValues);
+        axios.post(
+          "http://localhost:80/finbalancpp/src/backend/access/",
+          prueba
+        );
         console.log(prueba.getData());
         console.log(prueba.validateData(login_mode).isValid);
         if (prueba.validateData(login_mode).isValid) {
-          const login = handleLogin(formValues)
-            .then((result) => {
-              if (result) {
-                container_func(false);
-              }
-            })
-            .catch((error) => {
-              console.error("Error en el inicio de sesión:", error);
-            });
+          // const login = handleLogin(formValues)
+          //   .then((result) => {
+          //     if (result) {
+          // container_func(false);
+          //     }
+          //   })
+          //   .catch((error) => {
+          //     console.error("Error en el inicio de sesión:", error);
+          //   });
         }
       }
     : () => {
