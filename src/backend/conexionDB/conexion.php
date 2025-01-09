@@ -1,16 +1,23 @@
 <?php
-    const HOST = 'localhost';
-    const DBNAME = 'finbalancpp';
-    const USER = 'root';
-    const PASSWORD = '';
-    const UTF8 ="utf8";
 
-    const SGDB = "mysql:host=".HOST.";dbname=".DBNAME.";charset=".UTF8; 
-
-    class DbConnection{
-        protected function connection(){
-            $pdo= new PDO(SGDB,USER,PASSWORD);
-            return $pdo;
+class DbConnection{
+    private $host = 'localhost';
+    private $dbname = 'finbalancpp';
+    private $user = 'root';
+    private $password = '';
+    private $utf8 = "utf8";
+    
+    public function connect(){
+        try{
+            $sgdb = "mysql:host=".$this->host.";dbname=".$this->dbname.";charset=".$this->utf8; 
+            
+            $conn = new PDO($sgdb, $this->user, $this->password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $conn;
+        }catch(\Exception $e){
+            // Captura y logueo del erro
+            echo "Error de conexión: " . $e->getMessage();      
         }
     }
-?>
+    
+}
