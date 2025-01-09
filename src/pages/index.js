@@ -4,8 +4,8 @@ import Sidebar from "@/pages/components/sidebar";
 import {useState} from "react";
 
 export default function Home() {
-    const [showLogin, setShowLogin] = useState(true);
-    // const [showLogin, setShowLogin] = useState(false); // debug
+    //const [showLogin, setShowLogin] = useState(true);
+     const [showLogin, setShowLogin] = useState(false); // debug
 
     const [earningsVisible, setEarningsVisible] = useState(false);
 
