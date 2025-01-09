@@ -1,5 +1,7 @@
 import GetSVG from "@/pages/svg";
 import {useState} from "react";
+import { exit } from '@tauri-apps/plugin-process';
+
 
 function createButton(svg_name, svg_style, selected, action) {
     let bg_style = selected ? "bg-accent-1 dark:bg-accent-2" : "";

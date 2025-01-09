@@ -1,7 +1,7 @@
 
 const HEX_VALUES = "0123456789ABCDEF";
 
-function newColor() {
+export function newColor() {
     let colors = [];
     for (let i = 0; i < 6; i++)
         colors[i] = HEX_VALUES.charAt(Math.trunc(16 * Math.random()));

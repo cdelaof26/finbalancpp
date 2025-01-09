@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "finbalancpp",
-  "version": "0.0.8",
-  "identifier": "com.tauri.build",
+  "version": "0.0.9",
+  "identifier": "com.ads.finbalancpp",
   "build": {
     "frontendDist": "../out",
     "devUrl": "http://localhost:3000",

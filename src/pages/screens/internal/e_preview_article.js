@@ -7,8 +7,15 @@ export function format_money(value) {
     if (value.length === 0)
         return "$0";
 
-    if (!/\d+/g.test(value))
+    if (!/^(\d+|\d+\.\d+)$/g.test(value))
         return value;
+
+    let dec = "";
+    if (value.includes(".")) {
+        const slt = value.split(".");
+        value = slt[0];
+        dec = "." + slt[1];
+    }
 
     if (value.length < 4)
         return "$" + value;
@@ -22,7 +29,7 @@ export function format_money(value) {
     }
     formatted = groups * 3 < r.length ? formatted + r.substring(groups * 3, r.length) : formatted.substring(0, formatted.length - 1);
 
-    return "$" + formatted.split("").reverse().join("")
+    return "$" + formatted.split("").reverse().join("") + dec
 }
 
 export default function EPreviewArticle({
@@ -30,6 +37,7 @@ export default function EPreviewArticle({
         editableClassName = null, component = null, initialEditableState = false,
         indicator = ""
 }) {
+    // console.log(caption === null, value === null, initialColor === null, editableClassName === null, component === null);
     if (caption === null || value === null || initialColor === null
         || editableClassName === null || component === null)
         return <NothingToSee></NothingToSee>;
@@ -40,7 +48,7 @@ export default function EPreviewArticle({
 
     let label;
     if (!editable)
-        label = <label className="ps-3 self-center"> { title } </label>
+        label = <label className="ps-3 self-center"> { title.length !== 0 ? title : "Categoría sin nombre" } </label>
     else
         label = <input type="text" onChange={(e) => setTitle(e.target.value) } value={title} className="self-center ps-3 p-1.5 rounded-lg text-sm bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 placeholder-accent-dim-0 dark:placeholder-accent-dim-1 focus:ring-accent-0 focus:border-accent-0" placeholder="Titulo"/>
 

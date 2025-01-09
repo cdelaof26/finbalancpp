@@ -58,6 +58,12 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.9
+- Fixed exit button
+- `EarningsEditor` is now _somewhat_ functional
+  - Fixed overflow
+- Added error message
+
 #### v0.0.8
 - Massive rewrite to fix `npm run build`
 - Fixed links in `home` and `debit_n_debt`
