@@ -46,7 +46,7 @@ class User
             ];
         }
         // Retornar la respuesta en formato JSON
-        return json_encode($response);
+        echo json_encode($response);
     }
 
     public function exist()
@@ -71,7 +71,6 @@ class User
                 // Verificar la contraseña usando password_verify
                 //if (password_verify($user->password, $result["contrasena"])) { ////////Aqui se modifico el hash
                 if ($user->password == $result["contrasena"]) {
-                    print_r($result);
                     $response = [
                         "status" => 1,
                         "message" => "Usuario encontrado",
@@ -101,7 +100,7 @@ class User
             ];
         }
         // Retornar la respuesta en formato JSON
-        return json_encode($response);
+        return $response;
     }
 
     public function addIngreso()

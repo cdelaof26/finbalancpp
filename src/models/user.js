@@ -1,4 +1,5 @@
 import axios from "axios";
+import { host } from "./serverRute";
 
 export default class User {
   constructor({ email, password, username = null, confirmPassword = null }) {
@@ -21,7 +22,7 @@ export default class User {
 
     if (!password.test(this.password) && !validMode) {
       errors.push(
-        "La contraseña debe tener al menos un número, una letra minúscula, una mayúscula, un carácter especial y al menos 8 caracteres.",
+        "La contraseña debe tener al menos un número, una letra minúscula, una mayúscula, un carácter especial y al menos 8 caracteres."
       );
     }
 
@@ -55,6 +56,7 @@ export default class User {
       username: this.username,
       email: this.email,
       password: this.password,
+      confirmPassword: this.confirmPassword,
       action: this.action,
     };
   }
@@ -62,10 +64,7 @@ export default class User {
   async register() {
     try {
       const inputs = this.getData();
-      const response = await axios.post(
-        "http://localhost:80/finbalancpp/src/backend/access/",
-        inputs,
-      );
+      const response = await axios.post(host, inputs);
       return response.data;
     } catch (error) {
       console.error("Error durante el registro:", error);
@@ -76,10 +75,7 @@ export default class User {
   async exist() {
     try {
       const inputs = this.getData();
-      const response = await axios.post(
-        "http://localhost:80/finbalancpp/src/backend/access/",
-        inputs,
-      );
+      const response = await axios.post(host, inputs);
       return response.data;
     } catch (error) {
       console.error("Error durante el inicio de sesion:", error);

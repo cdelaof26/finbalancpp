@@ -59,6 +59,7 @@ export default function UserPrompt(login_mode, container_func) {
             // const prueba = new User(formValues);
             console.log(inputs);
             user.setData(inputs, "login");
+            console.log(user.getData());
             if (user.validateData(login_mode).isValid) {
                 try {
                     const result = await user.exist();

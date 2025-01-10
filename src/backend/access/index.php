@@ -20,15 +20,16 @@ $userSession = new UserSession();
 $input = json_decode(file_get_contents("php://input"), true);
 $action = $input["action"];
 if (isset($_SESSION["username"])) {
-    // echo "Sesión activa para el usuario: " . $_SESSION["username"];
+    echo "Sesión activa para el usuario: " . $_SESSION["username"];
 } else {
-    $res;
     if ($action === "login") {
         $res = $user->exist();
+       if(isset($res["data"]["nombre"]))
+            $userSession->setSession($res["data"]["nombre"], $input["email"]);
+        echo json_encode($res);
     } else {
-        $res = $user->register();
+        $user->register();
     }
-    echo $res;
 }
 // echo print_r(isset($_SESSION["nombre"]));
 // print_r($_SESSION);

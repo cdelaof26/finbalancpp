@@ -58,6 +58,9 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.11
+- Branches `main`, `back` and `backend` merged
+
 #### v0.0.10
 - Fixed `EarningsEditor`
 - Now earnings will update based on earnings added
