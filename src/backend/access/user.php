@@ -16,13 +16,13 @@ class User
             $hashedPassword = password_hash($user->password, PASSWORD_BCRYPT);
             // Consulta SQL para insertar el nuevo usuario
             $sql =
-                "INSERT INTO Usuarios (nombre, correo, contraseña) VALUES (:username, :email, :password)";
+                "INSERT INTO Usuario (nombre, correo, contrasena) VALUES (:username, :email, :password)";
             // Preparar la consulta
             $stmt = $this->conn->prepare($sql);
             // Enlazar los parámetros
             $stmt->bindParam("username", $user->username);
             $stmt->bindParam("email", $user->email);
-            $stmt->bindParam("password", $hashedPassword);
+            $stmt->bindParam("password", $user->password);
             // Ejecutar la consulta
             if ($stmt->execute()) {
                 $response = [
@@ -57,7 +57,7 @@ class User
 
             // Consulta SQL para verificar si el usuario existe
             $sql =
-                "SELECT id_usuario,nombre,correo,contraseña FROM Usuarios WHERE correo = :email";
+                "SELECT id,nombre,correo,contrasena FROM Usuario WHERE correo = :email";
             // Preparar la consulta
             $stmt = $this->conn->prepare($sql);
             // Enlazar el parámetro de correo
@@ -69,13 +69,14 @@ class User
                 // Obtener los datos del usuario
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 // Verificar la contraseña usando password_verify
-                if (password_verify($user->password, $result["contraseña"])) {
+                //if (password_verify($user->password, $result["contrasena"])) {
+                if ($user->password == $result["contrasena"]) {
                     print_r($result);
                     $response = [
                         "status" => 1,
                         "message" => "Usuario encontrado",
                         "data" => [
-                            "id_usuario" => $result["id_usuario"],
+                            "id" => $result["id"],
                             "nombre" => $result["nombre"],
                             "correo" => $result["correo"],
                         ],
