@@ -26,6 +26,7 @@
 *.pem
 Setup.txt
 src/replace.py
+package-lock.json
 
 # debug
 npm-debug.log*

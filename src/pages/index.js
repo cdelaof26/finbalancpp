@@ -1,9 +1,8 @@
 import LoginContainer from "@/pages/components/login_container";
+import IconButton from "@/pages/screens/internal/icon_button";
 import AppContainer from "@/pages/components/app_container";
 import Sidebar from "@/pages/components/sidebar";
 import {useState} from "react";
-import GetSVG from "@/pages/svg";
-import IconButton from "@/pages/screens/internal/icon_button";
 
 export default function Home() {
     const [showLogin, setShowLogin] = useState(true);
