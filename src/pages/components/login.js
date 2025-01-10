@@ -1,9 +1,7 @@
 import GetSVG from "@/pages/svg";
-import { Input } from "postcss";
+import { Input, Result } from "postcss";
 import { useRef, useState } from "react";
 import User from "../../models/user.js";
-import { handleLogin, handleRegistration } from "../../services/api.js";
-import axios from "axios";
 function createFormField(data, padding, handle_change) {
   let placeholder = data.placeholder;
   let type = data.type;
@@ -31,7 +29,7 @@ function LogForm(
   form_data,
   padding,
   submit_action,
-  handle_change
+  handle_change,
 ) {
   return (
     <>
@@ -56,6 +54,7 @@ export default function UserPrompt(login_mode, container_func) {
   let padding = login_mode ? "mt-6" : "mt-3";
   const svg_style = "w-4 h-4 text-accent-dim-0 dark:text-accent-dim-1";
   const [inputs, setInputs] = useState({});
+  const user = new User({});
   const handle_change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -66,23 +65,23 @@ export default function UserPrompt(login_mode, container_func) {
     ? () => {
         // const prueba = new User(formValues);
         console.log(inputs);
-        axios.post(
-          "http://localhost:80/finbalancpp/src/backend/access/",
-          inputs
-        );
-        // if (prueba.validateData(login_mode).isValid) {
-        // container_func(false);
-        // }
+
+        container_func(false);
       }
-    : () => {
-        // if (prueba.validateData(login_mode).isValid)
-        console.log(inputs);
-        axios.post(
-          "http://localhost:80/finbalancpp/src/backend/access/",
-          inputs
-        );
-        // if (prueba.validateData(login_mode).isValid) {
-        // }
+    : async function () {
+        user.setData(inputs);
+        if (user.validateData(login_mode)) {
+          try {
+            const result = await user.register();
+            login_mode = true;
+            console.log(result);
+          } catch (error) {
+            console.error("Error durante el registro del usuario:", error);
+          }
+        } else {
+          const err = user.validateData(login_mode); //Datos incorrecctos en json
+          console.log(err);
+        }
         null;
       };
 
@@ -137,7 +136,7 @@ export default function UserPrompt(login_mode, container_func) {
         form_elements,
         padding,
         submit_action,
-        handle_change
+        handle_change,
       )}
     </div>
   );

@@ -1,5 +1,7 @@
+import axios from "axios";
+
 export default class User {
-  constructor({ username = null, email, password, confirmPassword = null }) {
+  constructor({ email, password, username = null, confirmPassword = null }) {
     this.username = username;
     this.email = email;
     this.password = password;
@@ -18,7 +20,7 @@ export default class User {
 
     if (!password.test(this.password)) {
       errors.push(
-        "La contraseña debe tener al menos un número, una letra minúscula, una mayúscula, un carácter especial y al menos 8 caracteres."
+        "La contraseña debe tener al menos un número, una letra minúscula, una mayúscula, un carácter especial y al menos 8 caracteres.",
       );
     }
 
@@ -53,4 +55,20 @@ export default class User {
       password: this.password,
     };
   }
+
+  async register() {
+    try {
+      const inputs = this.getData();
+      const response = await axios.post(
+        "http://localhost:80/finbalancpp/src/backend/access/",
+        inputs,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error during registration:", error);
+      throw error;
+    }
+  }
+
+  async quearyData() {}
 }

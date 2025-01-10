@@ -1,28 +1,22 @@
 <?php
 error_reporting(E_ALL);
-ini_set('display_errors',1);
+ini_set("display_errors", 1);
 header("Access-Control-Allow-Origin:*");
 header("Access-Control-Allow-Headers:*");
-include_once ("../conexionDB/conexion.php");
-    $objDb = new DbConnection();
-    $conn = $objDb->connect();
-    $method = $_SERVER['REQUEST_METHOD'];
-    
-    switch($method){
-        case "POST":    //solicitud
-            $user =json_decode(file_get_contents('php://input')) ;  //convertir datos en json
-            $sql = "INSERT INTO Usuarios (nombre, correo, contraseña)  VALUES (:username, :email, :password)"; //preparar query
-            $stmt = $conn->prepare( $sql); 
-            $stmt->bindParam('username', $user->username); 
-            $stmt->bindParam('email', $user->email);
-            $stmt->bindParam('password', $user->password);
-            if($stmt->execute()){
-                $response = [ 'status'=> 1,"message"=> "Usuario registrado exitosamente."];
-            }else {
-                $response = [ 'status'=> 0,"message"=> "Error al registrar el usuario."];
-
-            }
-            break;
-    }
-
-
+include_once "../conexionDB/conexion.php";
+include "./user.php";
+// Conectar a base de datos
+$objDb = new DbConnection();
+$conn = $objDb->connect();
+$method = $_SERVER["REQUEST_METHOD"];
+//Usuario y estado de la sesion
+$user = new User($conn);
+// $userSesion = new userSesion();
+$res = $user->register();
+// if(0){  //no se ha iniciado sesio
+echo $res;
+// }else{
+//     $usua
+// $i = json_decode(file_get_contents($res));
+// echo $i;
+// }
