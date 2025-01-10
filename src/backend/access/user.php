@@ -22,7 +22,7 @@ class User
             // Enlazar los parámetros
             $stmt->bindParam("username", $user->username);
             $stmt->bindParam("email", $user->email);
-            $stmt->bindParam("password", $user->password);
+            $stmt->bindParam("password", $user->password); ////////Aqui se modifico el hash
             // Ejecutar la consulta
             if ($stmt->execute()) {
                 $response = [
@@ -69,7 +69,7 @@ class User
                 // Obtener los datos del usuario
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 // Verificar la contraseña usando password_verify
-                //if (password_verify($user->password, $result["contrasena"])) {
+                //if (password_verify($user->password, $result["contrasena"])) { ////////Aqui se modifico el hash
                 if ($user->password == $result["contrasena"]) {
                     print_r($result);
                     $response = [
