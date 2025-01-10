@@ -6,7 +6,7 @@ CREATE TABLE Usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL
 );
 
 -- Tabla: Adeudo
@@ -129,7 +129,7 @@ CREATE TABLE Inversiones (
 );
 
 -- Insertar datos en la tabla Usuario
-INSERT INTO Usuario (nombre, correo, contrasena, loginStatus) VALUES
+INSERT INTO Usuario (nombre, correo, contrasena) VALUES
 ('Erick', 'erick@gmail.com', 'Erick123/'),
 ('Ivan', 'ivan@gmail.com', 'Ivan123/');
 
