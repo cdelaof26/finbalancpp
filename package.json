@@ -21,6 +21,7 @@
     "tailwindcss": "^3.4.1"
   },
   "dependencies": {
-    "@tauri-apps/plugin-process": "^2.2.0"
+    "@tauri-apps/plugin-process": "^2.2.0",
+    "axios": "^1.7.9"
   }
 }
