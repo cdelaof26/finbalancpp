@@ -1,7 +1,6 @@
 import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
 import ColorEditor from "@/pages/screens/internal/color_editor";
 import IconButton from "@/pages/screens/internal/icon_button";
-import {useState} from "react";
 
 export function format_money(value) {
     if (value.length === 0)
@@ -10,6 +9,7 @@ export function format_money(value) {
     if (!/^(\d+|\d+\.\d+)$/g.test(value))
         return value;
 
+    value = value === "0" ? "0" : value.replaceAll(/^0+/g, "");
     let dec = "";
     if (value.includes(".")) {
         const slt = value.split(".");
@@ -33,18 +33,15 @@ export function format_money(value) {
 }
 
 export default function EPreviewArticle({
-        caption = null, value = null, initialColor = null,
-        editableClassName = null, component = null, initialEditableState = false,
-        indicator = ""
+        title, setTitle = null, value, editable, setEditable = null, color, setColor = null, deleteAction = null, component,
+        render = true, indicator = "", editableClassName = ""
 }) {
     // console.log(caption === null, value === null, initialColor === null, editableClassName === null, component === null);
-    if (caption === null || value === null || initialColor === null
-        || editableClassName === null || component === null)
-        return <NothingToSee></NothingToSee>;
+    if (title === undefined || title === null)
+        return;
 
-    const [editable, setEditable] = useState(initialEditableState);
-    const [title, setTitle] = useState(caption);
-    const [color, setColor] = useState(initialColor);
+    if (!render)
+        return <NothingToSee></NothingToSee>;
 
     let label;
     if (!editable)
@@ -60,11 +57,11 @@ export default function EPreviewArticle({
                     { label }
                 </div>
                 <div className="flex">
-                    <label className={"self-center transition-[opacity] duration-300 " + (!editable ? "opacity-100" : "opacity-0")}>
+                    <label className="self-center">
                         { indicator + " " + format_money(value) }
                     </label>
                     <div className="flex">
-                        <IconButton icon="trash" className="self-center mx-2 w-8 h-8"></IconButton>
+                        <IconButton icon="trash" className="self-center mx-2 w-8 h-8" action={deleteAction}></IconButton>
                         <IconButton icon="pencil" className="self-center w-8 h-8" toggleBg={true} toggleVar={editable} action={setEditable}></IconButton>
                     </div>
                 </div>

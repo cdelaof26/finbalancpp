@@ -38,7 +38,7 @@ export default function HomePage({func}) {
 
     return (
         <div className="flex justify-center w-full">
-            <Earnings earnings={"16680"} cardDetails={card_details} func={func}></Earnings>
+            <Earnings cardDetails={card_details} func={func}></Earnings>
             <div className="flex flex-col w-[40%] mx-4">
                 <PreviewWidget title="Adeudos y deudas próximas" data={debt_data}></PreviewWidget>
                 <PreviewWidget title="Presupuestos" data={ {"className": "mt-2", "icons": ["eye-slash"], "buttonCaption": "Ver todos los presupuestos", "buttonAction": () => { func.setSidebarToggled(4); func.loadBudgets() } } }></PreviewWidget>

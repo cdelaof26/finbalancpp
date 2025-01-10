@@ -38,7 +38,7 @@ export default function Budgets({func}) {
     return (
         <div className="flex justify-center w-full">
             <div className="flex flex-col w-[40%] rounded-2xl">
-                <Earnings earnings="16680" showCards={false} func={func}></Earnings>
+                <Earnings showCards={false} func={func}></Earnings>
                 <div className="flex overflow-y-auto flex-col h-full mt-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
                     <Title title="Sugerencias"></Title>
                     { recommendations.map(r => <Recommendation title={r.title} body={r.body} icon={r.icon}></Recommendation>) }
@@ -46,7 +46,7 @@ export default function Budgets({func}) {
             </div>
             <div className="flex flex-col w-[60%] ml-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
                 <Title title="Categorías" icons={["plus"]}></Title>
-                { category_examples.map(e => <EPreviewArticle caption={e.caption} value={e.value} indicator={e.indicator} initialColor={e.color} editableClassName={e.editableClassName} component={e.component}></EPreviewArticle>) }
+                { category_examples.map(e => <EPreviewArticle title={e.caption} value={e.value} indicator={e.indicator} color={e.color} editableClassName={e.editableClassName} component={e.component}></EPreviewArticle>) }
             </div>
         </div>
     );

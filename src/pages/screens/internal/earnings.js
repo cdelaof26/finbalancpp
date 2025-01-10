@@ -59,8 +59,8 @@ function CardSection({cardDetails, cardNumberVisible, setCardNumberVisible}) {
 }
 
 export default function Earnings({
-         earnings = "", cardDetails = [], showCards = true,
-         canPaintEditAsPressed = false, func
+         cardDetails = [], showCards = true, canPaintEditAsPressed = false,
+         func
 }) {
     if (func === undefined || func === null)
         return;
@@ -86,7 +86,7 @@ export default function Earnings({
                     { title }
                     <div className="flex flex-col my-4 p-3 w-full rounded-xl bg-primary-0 dark:bg-primary-1">
                         <label className={"self-center text-3xl " + (func.earningsVisible ? "" : "font-bold")}>
-                            { func.earningsVisible ? format_money(earnings) : "****" }
+                            { func.earningsVisible ? format_money(func.userEarnings) : "****" }
                         </label>
                     </div>
                 </div>

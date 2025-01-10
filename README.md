@@ -58,6 +58,12 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.10
+- Fixed `EarningsEditor`
+- Now earnings will update based on earnings added
+- `debit_n_debt` is now _almost_ functional
+  - Fixed overflow
+
 #### v0.0.9
 - Fixed exit button
 - `EarningsEditor` is now _somewhat_ functional

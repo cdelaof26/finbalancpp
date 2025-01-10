@@ -4,7 +4,7 @@ import GetSVG from "@/pages/svg";
 export default function EarningsNCards({func}) {
     return (
         <div className="flex justify-center w-full">
-            <Earnings earnings="16680" func={func}></Earnings>
+            <Earnings func={func}></Earnings>
             <div className="flex flex-col w-[60%] ml-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
                 <h1 className="font-bold text-2xl mb-2 indent-10">
                     Gestión de ingresos

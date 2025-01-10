@@ -11,6 +11,7 @@ export default function Home() {
     const [helpSectionOpen, setHelpSectionOpen] = useState(false);
     const [loginOpen, setLoginOpen] = useState(true);
 
+    const [userEarnings, setUserEarnings] = useState("0");
     const [earningsVisible, setEarningsVisible] = useState(false);
     const [cardNumberVisible, setCardNumberVisible] = useState(false);
 
@@ -34,6 +35,8 @@ export default function Home() {
         "loadTips": () => { setSubPage(0); setCurrentPage(8) },
 
         "subPage": subPage,
+        "userEarnings": userEarnings,
+        "setUserEarnings": setUserEarnings,
         "earningsVisible": earningsVisible,
         "setEarningsVisible": setEarningsVisible,
         "cardNumberVisible": cardNumberVisible,
@@ -62,7 +65,7 @@ export default function Home() {
             { showLogin ? login : pages[currentPage] }
             { sidebar_func[0] }
             <div className={"absolute flex w-1/3 h-24 rounded-xl p-4 bottom-4 right-4 bg-red-800 text-white " + (errorMsgVisible ? "" : "hidden")}>
-                <IconButton icon="x-mark" className="w-12 h-12 self-center" action={() => {setErrorMsgVisible(false)}}></IconButton>
+                <IconButton icon="x-mark" className="w-12 h-12 text-white self-center" toggleIcon={false} action={() => {setErrorMsgVisible(false)}}></IconButton>
                 <div className="self-center ml-2 ps-3 h-full border-l">
                     <h5 className="font-bold uppercase text-xs">
                         { errorTitle }

@@ -35,7 +35,7 @@ function updateValue(newValue, value, setValue, mode, setError) {
 
 function InputValueSelector({value, setValue}) {
     return (
-        <input onChange={e => { setValue(e.target.value) }} value={value} type="text" className="w-full self-center text-center p-1.5 rounded-lg text-sm bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 placeholder-accent-dim-0 dark:placeholder-accent-dim-1 focus:ring-accent-0 focus:border-accent-0" placeholder="$100"/>
+        <input onChange={e => { setValue(e.target.value) }} value={value === "0" ? "" : value} type="text" className="w-full self-center text-center p-1.5 rounded-lg text-sm bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 placeholder-accent-dim-0 dark:placeholder-accent-dim-1 focus:ring-accent-0 focus:border-accent-0" placeholder="$100"/>
     );
 }
 
@@ -58,10 +58,11 @@ export default function NumericValueEditor({
 
     const updateField = (i) => {
         const v = updateValue(fieldValue[i], fieldValue[1], setValue, i, setError);
-        setFieldValueI(v, 1);
-        fieldValue[1] = v; // ????
-        if (i !== 1)
-            setFieldValueI("0", i);
+
+        const newFieldValue = [...fieldValue];
+        newFieldValue[1] = v;
+        if (i !== 1) newFieldValue[i] = "";
+        setFieldValue(newFieldValue);
     }
 
     return (
