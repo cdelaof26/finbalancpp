@@ -54,9 +54,10 @@ class User
         try {
             // Obtener datos JSON del input
             $user = json_decode(file_get_contents("php://input"));
+
             // Consulta SQL para verificar si el usuario existe
             $sql =
-                "SELECT correo contraseña FROM Usuarios WHERE correo = :email";
+                "SELECT id_usuario,nombre,correo,contraseña FROM Usuarios WHERE correo = :email";
             // Preparar la consulta
             $stmt = $this->conn->prepare($sql);
             // Enlazar el parámetro de correo
@@ -69,6 +70,7 @@ class User
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 // Verificar la contraseña usando password_verify
                 if (password_verify($user->password, $result["contraseña"])) {
+                    print_r($result);
                     $response = [
                         "status" => 1,
                         "message" => "Usuario encontrado",
@@ -95,12 +97,6 @@ class User
             $response = [
                 "status" => 0,
                 "message" => "Error en la base de datos: " . $e->getMessage(),
-            ];
-        } catch (Exception $e) {
-            // Manejo de otros errores generales
-            $response = [
-                "status" => 0,
-                "message" => $e->getMessage(),
             ];
         }
         // Retornar la respuesta en formato JSON

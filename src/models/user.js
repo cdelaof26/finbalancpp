@@ -6,6 +6,7 @@ export default class User {
     this.email = email;
     this.password = password;
     this.confirmPassword = confirmPassword;
+    this.action = null;
   }
 
   // Validar datos del usuario
@@ -18,7 +19,7 @@ export default class User {
       errors.push("El correo electrónico no es válido.");
     }
 
-    if (!password.test(this.password)) {
+    if (!password.test(this.password) && !validMode) {
       errors.push(
         "La contraseña debe tener al menos un número, una letra minúscula, una mayúscula, un carácter especial y al menos 8 caracteres.",
       );
@@ -38,7 +39,7 @@ export default class User {
     };
   }
 
-  setData(data) {
+  setData(data, action) {
     if (typeof data === "object" && data !== null) {
       Object.keys(data).forEach((key) => {
         if (data[key] != null && this.hasOwnProperty(key)) {
@@ -46,6 +47,7 @@ export default class User {
         }
       });
     }
+    this.action = action;
   }
 
   getData() {
@@ -53,6 +55,7 @@ export default class User {
       username: this.username,
       email: this.email,
       password: this.password,
+      action: this.action,
     };
   }
 
@@ -65,10 +68,22 @@ export default class User {
       );
       return response.data;
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error("Error durante el registro:", error);
       throw error;
     }
   }
 
-  async quearyData() {}
+  async exist() {
+    try {
+      const inputs = this.getData();
+      const response = await axios.post(
+        "http://localhost:80/finbalancpp/src/backend/access/",
+        inputs,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error durante el inicio de sesion:", error);
+      throw error;
+    }
+  }
 }

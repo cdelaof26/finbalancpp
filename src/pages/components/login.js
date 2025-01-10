@@ -62,18 +62,30 @@ export default function UserPrompt(login_mode, container_func) {
     setInputs((values) => ({ ...values, [name]: value }));
   };
   const submit_action = login_mode
-    ? () => {
+    ? async function () {
         // const prueba = new User(formValues);
         console.log(inputs);
-
-        container_func(false);
+        user.setData(inputs, "login");
+        if (user.validateData(login_mode).isValid) {
+          try {
+            const result = await user.exist();
+            console.log(result);
+            if (result.status != 0) {
+              container_func(false);
+            }
+          } catch (error) {
+            console.error("Error durante el registro del usuario:", error);
+          }
+        } else {
+          const err = user.validateData(login_mode); //Datos incorrecctos en json
+          console.log(err);
+        }
       }
     : async function () {
-        user.setData(inputs);
-        if (user.validateData(login_mode)) {
+        user.setData(inputs, "register");
+        if (user.validateData(login_mode).isValid) {
           try {
             const result = await user.register();
-            login_mode = true;
             console.log(result);
           } catch (error) {
             console.error("Error durante el registro del usuario:", error);
@@ -124,7 +136,7 @@ export default function UserPrompt(login_mode, container_func) {
         placeholder: "Confirmar contraseña",
         type: "password",
         svg: GetSVG("key", svg_style),
-        name: "passwordConfirm",
+        name: "confirmPassword",
       },
     ];
 
