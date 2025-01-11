@@ -1,4 +1,3 @@
-import axios from "axios";
 import { host } from "./serverRute";
 
 export default class User {
@@ -64,14 +63,12 @@ export default class User {
   async register() {
     try {
       const inputs = this.getData();
-      const response = await fetch(
-        "http://localhost:80/finbalancpp/src/backend/access/index.php",
-        {
-          method: "POST",
-          body: JSON.stringify(inputs),
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      const response = await fetch(host, {
+        method: "POST",
+        body: JSON.stringify(inputs),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
 
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
@@ -87,10 +84,21 @@ export default class User {
   async exist() {
     try {
       const inputs = this.getData();
-      const response = await axios.post(host, inputs);
-      return response.data;
+      const response = await fetch(host, {
+        method: "POST",
+        body: JSON.stringify(inputs),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result;
     } catch (error) {
-      console.error("Error durante el inicio de sesion:", error);
+      console.error("Error en la función exist:", error.message);
       throw error;
     }
   }
