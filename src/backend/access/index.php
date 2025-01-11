@@ -6,30 +6,38 @@ header("Access-Control-Allow-Headers:*");
 include_once "../conexionDB/conexion.php";
 include "./user.php";
 include "./userSession.php";
-// Conectar a base de datos
+/* // Conectar a base de datos
 $objDb = new DbConnection();
 $conn = $objDb->connect();
-$method = $_SERVER["REQUEST_METHOD"];
 //Usuario y estado de la sesion
 $user = new User($conn);
 $userSession = new UserSession();
-// print_r(json_decode(file_get_contents("php://input")));
-// $res = $user->register();
-// $res = $user->exist();
 
+// $user->getEarnings();
+ */
+//funcional
 $input = json_decode(file_get_contents("php://input"), true);
+$objDb = new DbConnection();
+$conn = $objDb->connect();
+//Usuario y estado de la sesion
+$user = new User($conn);
+$userSession = new UserSession();
 $action = $input["action"];
 if (isset($_SESSION["username"])) {
     echo "Sesión activa para el usuario: " . $_SESSION["username"];
 } else {
     if ($action === "login") {
         $res = $user->exist();
-       if(isset($res["data"]["nombre"]))
-            $userSession->setSession($res["data"]["nombre"], $input["email"]);
+        if (isset($res["data"]["nombre"])) {
+            $userSession->setSession(
+                $res["data"]["nombre"],
+                $input["email"],
+                $res["id"]
+            );
+        }
         echo json_encode($res);
     } else {
         $user->register();
     }
+    echo $_SERVER["REQUEST_URI"];
 }
-// echo print_r(isset($_SESSION["nombre"]));
-// print_r($_SESSION);

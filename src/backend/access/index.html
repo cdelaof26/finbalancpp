@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba con Axios y PHP</title>
+  </head>
+  <body>
+    <h1>Prueba de Axios con das PHP</h1>
+    <p>Revisa la consola para ver la respuesta del servidor.</p>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Enviar una petición POST a tu archivo PHP
+      const inputs = {
+        user: 2, // ID del usuario
+      };
+
+      async function register() {
+        try {
+          const response = await axios.post("index.php", inputs);
+          console.log("Respuesta del servidor:", response.data);
+        } catch (error) {
+          console.error("Error durante el registro:", error);
+        }
+      }
+      register();
+      //   axios
+      //     .post("index.php", {
+      //       name: "Adrian",
+      //     })
+      //     .then((response) => {
+      //       console.log("Respuesta del servidor:", response.data);
+      //     })
+      //     .catch((error) => {
+      //       console.error("Ocurrió un error:", error);
+      //     });
+    </script>
+  </body>
+</html>

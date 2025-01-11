@@ -6,15 +6,16 @@ class UserSession
         session_start();
     }
     //guardar galardoano
-    public function setSession($username, $email)
+    public function setSession($username, $email, $id)
     {
         $_SESSION["nombre"] = $username;
         $_SESSION["correo"] = $email;
+        $_SESSION["id"] = $id;
     }
 
     public function getSession()
     {
-        return [$_SESSION["nombre"], $_SESSION["correo"]];
+        return $_SESSION["id"];
     }
 
     public function closeSession()

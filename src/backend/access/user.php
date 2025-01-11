@@ -103,7 +103,110 @@ class User
         return $response;
     }
 
-    public function addIngreso()
+    public function addEarnings()
+    {
+        // Peticion esperada
+        //     const inputs = {
+        //     caption: "Trabajo",
+        //     value: "100.00",
+        //     fecha: "2025-01-11", // Fecha de hoy
+        //     color: "#0D4D19",
+        //     user: 1, // ID del usuario
+        //   };
+        try {
+            // Obtener datos JSON del input
+            $reg = json_decode(file_get_contents("php://input"));
+            // Consulta SQL para insertar el ingreso
+            $sql =
+                " INSERT INTO Ingreso (montoIngreso, fecha, fuente, categoriaIngreso, idUsuario) VALUES (:value, :fecha, :caption, :color, :user)";
+            // Preparar la consulta
+            $stmt = $this->conn->prepare($sql);
+            // Enlazar los parámetros
+            $stmt->bindParam("value", $reg->value);
+            $stmt->bindParam("fecha", $reg->fecha);
+            $stmt->bindParam("caption", $reg->caption);
+            $stmt->bindParam("color", $reg->color);
+            $stmt->bindParam("user", $reg->user);
+            // Ejecutar la consulta
+            if ($stmt->execute()) {
+                $response = [
+                    "status" => 1,
+                    "message" => "Ingreso registrado exitosamente.",
+                ];
+            } else {
+                throw new Exception("Error al registrar el ingreso.");
+            }
+        } catch (PDOException $e) {
+            // Manejo de errores de base de datos
+            $response = [
+                "status" => 0,
+                "message" => "Error de base de datos: " . $e->getMessage(),
+            ];
+        } catch (Exception $e) {
+            // Manejo de otros errores generales
+            $response = [
+                "status" => 0,
+                "message" => $e->getMessage(),
+            ];
+        }
+        // Retornar la respuesta en formato JSON
+        echo json_encode($response);
+    }
+
+    public function getEarnings()
+    {
+        // peticion esperada
+        // const inputs = {
+        //   user: 1, // ID del usuario
+        //   };
+        try {
+            // Obtener datos JSON del input
+            $reg = json_decode(file_get_contents("php://input"));
+
+            // Consulta SQL para verificar si el usuario existe
+            $sql =
+                "SELECT montoIngreso, fecha, fuente, categoriaIngreso FROM Ingreso WHERE idUsuario = :user";
+            // Preparar la consulta
+            $stmt = $this->conn->prepare($sql);
+            // Enlazar el parámetro de correo
+            $stmt->bindParam("user", $reg->user);
+            // Ejecutar la consulta
+            $stmt->execute();
+            // Verificar si el ingreo fue encontrado
+            if ($stmt->rowCount() > 0) {
+                // Obtener los datos del usuario
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $data = [];
+                foreach ($results as $result) {
+                    $data[] = [
+                        "caption" => $result["fuente"],
+                        "value" => $result["montoIngreso"],
+                        "color" => $result["categoriaIngreso"],
+                    ];
+                }
+                $response = [
+                    "status" => 1,
+                    "message" => $stmt->rowCount() . " registros encontrados",
+                    "records" => $stmt->rowCount(),
+                    "data" => $data,
+                ];
+            } else {
+                $response = [
+                    "status" => 0,
+                    "message" => "El usuario no tiene ingresos",
+                ];
+            }
+        } catch (PDOException $e) {
+            // Manejo de errores de base de datos
+            $response = [
+                "status" => 0,
+                "message" => "Error en la base de datos: " . $e->getMessage(),
+            ];
+        }
+        // Retornar la respuesta en formato JSON
+        echo json_encode($response);
+    }
+    public function updateEarning()
     {
     }
     public function addAdeudo()
