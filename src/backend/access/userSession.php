@@ -5,6 +5,7 @@ class UserSession
     {
         session_start();
     }
+
     //guardar galardoano
     public function setSession($username, $email, $id)
     {
