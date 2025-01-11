@@ -1,6 +1,9 @@
 import GetSVG from "@/pages/svg";
 import User from "@/models/user";
 import { useState } from "react";
+import axios from "axios";
+import { host } from "@/models/serverRute";
+
 function FormField({
   placeholder,
   inputType,
@@ -122,38 +125,45 @@ export default function UserPrompt(login_mode, container_func) {
     setInputs((values) => ({ ...values, [name]: value }));
   };
   const submit_action = login_mode
-    ? async function () {
+    ? function () {
         // const prueba = new User(formValues);
-        console.log(inputs);
-        user.setData(inputs, "login");
-        console.log(user.getData());
-        if (user.validateData(login_mode).isValid) {
-          try {
-            const result = await user.exist();
-            console.log(result);
-            if (result.status != 0) {
-              container_func(false);
-            }
-          } catch (error) {
-            console.error("Error durante el registro del usuario:", error);
-          }
-        } else {
-          const err = user.validateData(login_mode); //Datos incorrecctos en json
-          console.log(err);
-        }
+
+        container_func(false);
+
+        // console.log(inputs);
+        // user.setData(inputs, "login");
+        // console.log(user.getData());
+        // if (user.validateData(login_mode).isValid) {
+        //   try {
+        //     const result = await user.exist();
+        //     console.log(result);
+        //     if (result.status != 0) {
+        //       container_func(false);
+        //     }
+        //   } catch (error) {
+        //     console.error("Error durante el registro del usuario:", error);
+        //   }
+        // } else {
+        //   const err = user.validateData(login_mode); //Datos incorrecctos en json
+        //   console.log(err);
+        // }
       }
     : async function () {
         user.setData(inputs, "register");
         if (user.validateData(login_mode).isValid) {
           try {
             const result = await user.register();
-            console.log(result);
+            if (result) {
+              console.log("Registro exitoso:", result);
+            } else {
+              console.error("El registro no retornó datos válidos.");
+            }
           } catch (error) {
             console.error("Error durante el registro del usuario:", error);
           }
         } else {
-          const err = user.validateData(login_mode); //Datos incorrecctos en json
-          console.log(err);
+          const err = user.validateData(login_mode);
+          console.log("Errores de validación:", err);
         }
         null;
       };
