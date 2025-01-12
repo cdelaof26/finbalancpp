@@ -4,6 +4,7 @@ import Title from "@/pages/screens/internal/title_with_buttons";
 import Earnings from "@/pages/screens/internal/earnings";
 import {useState} from "react";
 import {newColor} from "@/pages/screens/internal/color_editor";
+import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
 
 function newArticle() {
     return {
@@ -50,7 +51,7 @@ export default function EarningsEditor({func}) {
             <Earnings canPaintEditAsPressed={true} func={func}></Earnings>
             <div className="flex overflow-y-auto flex-col w-[60%] ml-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
                 <Title title="Categorías" icons={["plus"]} action={[createArticle]}></Title>
-                { articles.map((a, index) => <EPreviewArticle editableClassName="h-48" indicator="Se agregaron"
+                { articles.length === 0 ? <NothingToSee></NothingToSee> : articles.map((a, index) => <EPreviewArticle editableClassName="h-48" indicator="Se agregaron"
                     title={a.caption} setTitle={(v) => {setProperty(v, "caption", index)}}
                     color={a.color} setColor={(v) => {setProperty(v, "color", index)}}
                     editable={a.editable} setEditable={(v) => {setProperty(v, "editable", index)}}

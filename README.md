@@ -58,6 +58,13 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.14
+- My investments page is now functional
+- Fixed tips design
+  - Tips is _functional_
+- `NothingToShow` now appears when no items are 
+  present
+
 #### v0.0.13
 - Create card is functional
 - Removed expired section in debit and debt

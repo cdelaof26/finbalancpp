@@ -6,7 +6,7 @@ import Title from "@/pages/screens/internal/title_with_buttons";
 import IconButton from "@/pages/screens/internal/icon_button";
 import {useState} from "react";
 
-function format_date(value) {
+export function format_date(value) {
     if (/^\d{4}-\d{1,2}-\d{1,2}$/g.test(value))
         return value;
 
@@ -144,10 +144,13 @@ function Section({title, middle = false}) {
             setNonCompletedArticles(newArticles);
     }
 
+    const presentData = completedArticles.length + nonCompletedArticles.length !== 0;
+
     return (
         <div className={"flex overflow-y-auto flex-col w-[40%] p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + (middle ? "mx-4" : "")}>
             <Title title={title} icons={["plus"]} action={[createNonCompletedArticle]}></Title>
-            <label className="uppercase font-bold text-accent-dim-0 mb-4">
+            <NothingToSee visible={!presentData}></NothingToSee>
+            <label className={"uppercase font-bold text-accent-dim-0 mb-4 " + (!presentData ? "hidden" : "")}>
                 Vigentes
             </label>
             { nonCompletedArticles.map((a, index) => <EDPreviewArticle editableClassName="h-40"
@@ -159,7 +162,7 @@ function Section({title, middle = false}) {
                 completed={a.completed} setCompleted={(v) => setProperty(v, "completed", index, false)}
                 deleteAction={() => deleteArticle(index, false)}
             ></EDPreviewArticle>) }
-            <label className="uppercase font-bold text-accent-dim-0 my-4">
+            <label className={"uppercase font-bold text-accent-dim-0 my-4 " + (!presentData ? "hidden" : "")}>
                 Completados
             </label>
             { completedArticles.map((a, index) => <EDPreviewArticle editableClassName="h-40"
@@ -176,15 +179,15 @@ function Section({title, middle = false}) {
 }
 
 export default function DebitNDebt({func}) {
-    const tips_example = [
+    /*const tips_example = [
         { "caption": "¿Cómo pedir un préstamo?", "captionClassName": "font-bold", "articleClassName": "my-2 p-4" },
         { "caption": "¿Qué pasa si no pago mi deuda por $5,000,000?", "captionClassName": "font-bold", "articleClassName": "my-2 p-4" },
         { "caption": "Gambling: Cómo Evitar Las Deudas En Juegos De Azar", "captionClassName": "font-bold", "articleClassName": "my-2 p-4" }
-    ];
+    ];*/
 
     const tips_options = {
         "className": " w-[20%]",
-        "data": tips_example,
+        "data": [], // tips_example,
         "maxItems": 6,
         "doNotLimitHeight": true,
         "buttonCaption": "Ver más tips",

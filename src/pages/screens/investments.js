@@ -1,21 +1,42 @@
-import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
 import InvestmentEditor from "@/pages/screens/internal/investment_editor";
 import {format_money} from "@/pages/screens/internal/e_preview_article";
+import {format_date, get_date} from "@/pages/screens/debit_n_debt";
 import Title from "@/pages/screens/internal/title_with_buttons";
+import {newColor} from "@/pages/screens/internal/color_editor";
 import IconButton from "@/pages/screens/internal/icon_button";
 import GetSVG from "@/pages/svg";
 import {useState} from "react";
+import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
+
+function investmentTimeHorizonToNumber(investmentTimeHorizon) {
+    switch (investmentTimeHorizon.toLowerCase()) {
+        case "mensual":
+            return 60 * 60 * 24 * 30;
+        case "semanal":
+            return 60 * 60 * 24 * 7;
+        case "diario":
+            return 60 * 60 * 24;
+        default: // anual
+            return 60 * 60 * 24 * 365;
+    }
+}
+
+function addInvestmentTimeHorizonTo(d, ith) {
+    const date = Math.round(new Date(d).getTime() / 1000);
+    if (isNaN(date))
+        return d;
+
+    const newDate = new Date((date + investmentTimeHorizonToNumber(ith)) * 1000);
+    return newDate.getFullYear() + "-" + (newDate.getUTCMonth() + 1) + "-" + newDate.getUTCDate();
+}
 
 function Article({
-         caption = null, value = null, color = null,
-         expectedValue = null, inversionDate = null, performance = null
+         caption = "", value = "", color = "",
+         expectedValue = "", investmentDate = "", performance = "",
+         investmentTimeHorizon = "", editable = false, setEditable = null,
+         deleteAction = null
 }) {
-    if (caption === null || value === null || color === null
-        || expectedValue === null || inversionDate === null || performance === null)
-        return <NothingToSee></NothingToSee>
-
-    const [editable, setEditable] = useState(false);
-
+    const no_movement_expected = value === expectedValue;
     const increase_expected = Number(value) < Number(expectedValue);
 
     return (
@@ -37,23 +58,23 @@ function Article({
 
                 <div>
                     <div className="flex justify-center">
-                        <GetSVG name={"arrow-trending-"  + (increase_expected ? "up" : "down")} classNameData={"w-6 h-6 " + (increase_expected ? "text-green-500" : "text-red-500")}></GetSVG>
+                        <GetSVG name={ no_movement_expected ? "arrows-right-left" : "arrow-trending-"  + (increase_expected ? "up" : "down")} classNameData={"w-6 h-6 " + (no_movement_expected ? "" : increase_expected ? "text-green-500" : "text-red-500")}></GetSVG>
                         <label className="ps-3 font-bold">
                             { format_money(expectedValue) }
                         </label>
                     </div>
                     <label className="flex justify-center font-bold uppercase text-sm text-accent-dim-0 dark:text-accent-dim-1">
-                        { increase_expected ? "crecimiento" : "decremento" } esperado para el { inversionDate }
+                        { no_movement_expected ? "Sin movimiento" : increase_expected ? "crecimiento" : "decremento" } esperado para el { addInvestmentTimeHorizonTo(investmentDate, investmentTimeHorizon) }
                     </label>
                 </div>
 
                 <div className="flex justify-between">
                     <label className="self-center">
-                        Rendimiento {performance}
+                        Rendimiento {performance + " " + investmentTimeHorizon}
                     </label>
                     <div className="flex">
-                        <IconButton icon="trash" className="self-center mx-2 w-8 h-8"></IconButton>
-                        <IconButton icon="pencil" className="self-center w-8 h-8" toggleBg={true} toggleVar={editable} action={setEditable}></IconButton>
+                        <IconButton icon="trash" className="self-center mx-2 w-8 h-8" action={deleteAction}></IconButton>
+                        <IconButton icon="pencil" className="self-center w-8 h-8" paintPressed={editable} action={setEditable}></IconButton>
                     </div>
                 </div>
             </div>
@@ -61,25 +82,119 @@ function Article({
     );
 }
 
+function newArticle() {
+    return {
+        "caption": "", "color": newColor(), "investmentType": "", "performance": "",
+        "investmentTimeHorizon": "", "investmentDate": get_date(), "value": "", "expectedValue": "",
+        "editable": true
+    };
+}
+
 export default function Investments() {
-    const investments_examples = [
-        {"caption": "CETES", "value": "300", "color": "#55D9D7",
-            "expectedValue": "350", "inversionDate": "12/12/2025", "performance": "del 6% anual"},
-        {"caption": "Nu", "value": "1000", "color": "#4422FF",
-            "expectedValue": "1200", "inversionDate": "12/12/2025", "performance": "del 12% anual"},
-        {"caption": "Monero", "value": "30", "color": "#DDDD11",
-            "expectedValue": "10", "inversionDate": "12/12/2025", "performance": "volátil"}
-    ];
+    const [investments, setInvestments] = useState([]);
+    const [loadedInvestment, setLoadedInvestment] = useState(-1);
+
+    const createArticle = () => {
+        const newInvestments = [...investments];
+        newInvestments.push(newArticle());
+        if (loadedInvestment !== -1) {
+            const a = newInvestments[loadedInvestment];
+            a["editable"] = false;
+            newInvestments[loadedInvestment] = a;
+        }
+
+        setInvestments(newInvestments);
+        setLoadedInvestment(investments.length);
+    }
+
+    const calculateFinalBalance = (initialBalance, performance, timeHorizon) => {
+        // A = P(1 + r/n)^(nt)
+        // A = final balance
+        // P = principal (initial investment amount)
+        // r = annual interest rate (as a decimal)
+        // n = number of times interest is compounded per year
+        // t = time period (in years)
+        if (!timeHorizon.toLowerCase().includes("anua"))
+            return initialBalance;
+
+        if (performance.includes("%"))
+            performance = performance.replaceAll("%", "");
+
+        if (!/^\d+$/g.test(performance))
+            return;
+
+        performance = Number(performance) / 100;
+        return "" + (Number(initialBalance) * Math.pow(1 + performance / 1, 1 * 1));
+    }
+    
+    const setProperty = (value, property, index) => {
+        if (index === -1 || investments.length < index)
+            return;
+
+        const newInvestments = [...investments];
+        const a = newInvestments[index];
+
+        if (property === "value" || property === "performance" || property === "investmentTimeHorizon")
+            a["expectedValue"] = calculateFinalBalance(a["value"], a["performance"], a["investmentTimeHorizon"]);
+
+        a[property] = value;
+        newInvestments[index] = a;
+        setInvestments(newInvestments);
+        setLoadedInvestment(index);
+    }
+
+    const deleteArticle = (index) => {
+        const newInvestments = [...investments];
+        newInvestments.splice(index, 1);
+        setInvestments(newInvestments);
+        setLoadedInvestment(newInvestments.length !== 0 ? newInvestments.length : -1);
+    }
+
+    const loadInvestment = (index) => {
+        const newInvestments = [...investments];
+        if (loadedInvestment !== -1) {
+            const a = newInvestments[loadedInvestment];
+            a["editable"] = false;
+            newInvestments[loadedInvestment] = a;
+        }
+
+        const b = newInvestments[index];
+        b["editable"] = true;
+        newInvestments[index] = b;
+
+        setInvestments(newInvestments);
+        setLoadedInvestment(index);
+    }
+
+    let a = loadedInvestment !== -1 ? investments[loadedInvestment] : {};
 
     return (
         <div className="flex justify-center w-full">
             <div className="flex flex-col w-[40%] p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
-                <Title title="Inversiones" icons={["plus"]}></Title>
-                { investments_examples.map(i => <Article caption={i.caption} value={i.value} color={i.color} expectedValue={i.expectedValue} inversionDate={i.inversionDate} performance={i.performance}></Article>) }
+                <Title title="Inversiones" icons={["plus"]} action={[createArticle]}></Title>
+                { investments.length === 0 ? <NothingToSee></NothingToSee> : investments.map((a, index) => <Article
+                    caption={a.caption} value={a.value} color={a.color}
+                    expectedValue={a.expectedValue} investmentDate={a.investmentDate} performance={a.performance}
+                    investmentTimeHorizon={a.investmentTimeHorizon} editable={a.editable}
+                    setEditable={() => loadInvestment(index)} deleteAction={() => deleteArticle(index)}
+                ></Article>) }
             </div>
-            <div className="flex flex-col w-[60%] ml-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
-                <Title title="Detalles de la inversión"></Title>
-                <InvestmentEditor></InvestmentEditor>
+            <div className={"flex flex-col w-[60%] ml-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + (investments.length === 0 ? "justify-end" : "")}>
+                <Title title={investments.length !== 0 ? "Detalles de la inversión" : ""}></Title>
+                <InvestmentEditor
+                    caption={a.caption} setCaption={(v) => setProperty(v, "caption", loadedInvestment)}
+                    color={a.color} setColor={(v) => setProperty(v, "color", loadedInvestment)}
+                    investmentType={a.investmentType} setInvestmentType={(v) => setProperty(v, "investmentType", loadedInvestment)}
+                    performance={a.performance} setPerformance={(v) => setProperty(v, "performance", loadedInvestment)}
+                    investmentTimeHorizon={a.investmentTimeHorizon} setInvestmentTimeHorizon={(v) => setProperty(v, "investmentTimeHorizon", loadedInvestment)}
+                    investmentDate={a.investmentDate} setInvestmentDate={(v) => setProperty(v, "investmentDate", loadedInvestment)}
+                    value={a.value} setValue={(v) => setProperty(v, "value", loadedInvestment)}
+                    expectedValue={a.expectedValue} setExpectedValue={(v) => setProperty(v, "expectedValue", loadedInvestment)}
+                    render={investments.length !== 0}
+                ></InvestmentEditor>
+                <div className={"m-2 text-right text-accent-dim-0 dark:text-accent-dim-1 " + (investments.length === 0 ? "" : "hidden")}>
+                    Presiona sobre + para empezar
+                </div>
             </div>
         </div>
     );

@@ -31,10 +31,10 @@ function DataField({isTitle = false, icon, value, setFunc, editable, placeholder
 export default function MyAccount() {
     const [accountDataEditable, setAccountDataEditable] = useState(false);
 
-    const [userName, setUserName] = useState("NOMBRE_DE_USUARIO");
-    const [phoneNumber, setPhoneNumber] = useState("55 1234 5678");
-    const [mail, setMail] = useState("mail@gmail.com");
-    const [currency, setCurrency] = useState("MXN");
+    const [userName, setUserName] = useState("Usuario");
+    const [phoneNumber, setPhoneNumber] = useState("Número");
+    const [mail, setMail] = useState("Correo");
+    const [currency, setCurrency] = useState("Divisa");
 
     const svg_style = "w-4 h-4 text-accent-dim-0 dark:text-accent-dim-1";
 

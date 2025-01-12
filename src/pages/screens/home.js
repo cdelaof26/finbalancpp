@@ -2,29 +2,29 @@ import Earnings from "@/pages/screens/internal/earnings";
 import PreviewWidget from "@/pages/screens/internal/preview_widget";
 
 export default function HomePage({func}) {
-    const debt_example = [
+    /*const debt_example = [
         { "color": "#E7473D", "caption": "Pagar tarjeta Liverpool", "value": "12/12/2025" },
         { "color": "#F59D05", "caption": "Devolver dinero a María", "value": "12/12/2025" },
         { "color": "#A5AA05", "caption": "Pagar seguro", "value": "12/12/2025" },
         { "color": "#E44F8F", "caption": "Pagar agua", "value": "12/12/2025" },
-    ];
+    ];*/
 
     const debt_data = {
         "className": "mb-2",
-        "data": debt_example,
+        "data": [], // debt_example,
         "buttonCaption": "Ver todos los adeudos y deudas",
         "buttonAction": () => { func.setSidebarToggled(3); func.loadDebitNDebt() }
     };
 
-    const tips_example = [
+    /*const tips_example = [
         { "caption": "Aprende a invertir en bitcoin", "captionClassName": "font-bold", "articleClassName": "my-2 p-4" },
         { "caption": "¡No te dejes engañar! Bitcoin y las estafas online", "captionClassName": "font-bold", "articleClassName": "my-2 p-4" },
         { "caption": "Otro Tip que no aparecerá", "captionClassName": "font-bold", "articleClassName": "my-2 p-4" }
-    ];
+    ];*/
 
     const tips_options = {
         "className": "mb-2",
-        "data": tips_example,
+        "data": [], // tips_example,
         "maxItems": 1,
         "buttonCaption": "Ver más tips",
         "buttonAction": () => { func.setSidebarToggled(6); func.loadTips() }

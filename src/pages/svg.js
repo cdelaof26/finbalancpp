@@ -219,6 +219,14 @@ function arrow_trending_down(classNameData) {
     );
 }
 
+function arrows_right_left(classNameData) {
+    return (
+        <svg className={classNameData} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fillRule="evenodd" d="M15.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 1 1-1.06-1.06l3.22-3.22H7.5a.75.75 0 0 1 0-1.5h11.69l-3.22-3.22a.75.75 0 0 1 0-1.06Zm-7.94 9a.75.75 0 0 1 0 1.06l-3.22 3.22H16.5a.75.75 0 0 1 0 1.5H4.81l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
+        </svg>
+    );
+}
+
 /**
  * Retrieves a svg icon. Available icons:
  *
@@ -247,6 +255,7 @@ function arrow_trending_down(classNameData) {
  * - exclamation-triangle
  * - x-mark
  * - arrow-trending-down
+ * - arrows-right-left
  *
  * All icons were retrieved from https://heroicons.com/solid (MIT license)
  *
@@ -309,5 +318,7 @@ export default function GetSVG({name, classNameData}) {
             return shield_check(classNameData);
         case "arrow-trending-down":
             return arrow_trending_down(classNameData);
+        case "arrows-right-left":
+            return arrows_right_left(classNameData);
     }
 }

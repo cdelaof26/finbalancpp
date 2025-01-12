@@ -31,10 +31,9 @@ function newArticle() {
 }
 
 export default function Budgets({func}) {
-    // const [recommendations, setRecommendations] = useState([]);
     const [recommendations, setRecommendations] = useState([
-        {"title": "Incrementar presupuesto para Hogar", "body": "Recommendation body", "icon": "exclamation-triangle"},
-        {"title": "Has realizado 5 simulaciones finacieras", "body": "Congrats", "icon": "shield-check"}
+        /*{"title": "Incrementar presupuesto para Hogar", "body": "Recommendation body", "icon": "exclamation-triangle"},
+        {"title": "Has realizado 5 simulaciones finacieras", "body": "Congrats", "icon": "shield-check"}*/
     ]);
 
     const deleteRecommendation = (index) => {
@@ -85,12 +84,12 @@ export default function Budgets({func}) {
                 <Earnings showCards={false} func={func}></Earnings>
                 <div className="flex overflow-y-auto flex-col h-full mt-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
                     <Title title="Sugerencias"></Title>
-                    { recommendations.map(r => <Recommendation title={r.title} body={r.body} icon={r.icon} deleteAction={deleteRecommendation}></Recommendation>) }
+                    { recommendations.length === 0 ? <NothingToSee></NothingToSee> : recommendations.map(r => <Recommendation title={r.title} body={r.body} icon={r.icon} deleteAction={deleteRecommendation}></Recommendation>) }
                 </div>
             </div>
             <div className="flex overflow-y-auto flex-col w-[60%] ml-4 p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1">
                 <Title title="Categorías" icons={["plus"]} action={[createArticle]}></Title>
-                { articles.map((a, index) => <EPreviewArticle editableClassName="h-48" indicator="Limite en"
+                { articles.length === 0 ? <NothingToSee></NothingToSee> : articles.map((a, index) => <EPreviewArticle editableClassName="h-48" indicator="Limite en"
                     title={a.caption} setTitle={(v) => {setProperty(v, "caption", index)}}
                     color={a.color} setColor={(v) => {setProperty(v, "color", index)}}
                     editable={a.editable} setEditable={(v) => {setProperty(v, "editable", index)}}

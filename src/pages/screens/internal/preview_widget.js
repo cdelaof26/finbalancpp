@@ -66,7 +66,7 @@ export default function PreviewWidget({title, data = null}) {
             <div>
                 <Title title={title} icons={icons}></Title>
                 <div>
-                    { displayable_data.map((d) => PreviewArticle(d)) }
+                    { displayable_data.length === 0 ? <NothingToSee></NothingToSee> : displayable_data.map((d) => PreviewArticle(d)) }
                 </div>
             </div>
             { button }
