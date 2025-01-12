@@ -9,7 +9,7 @@ const CardType = {
     0: "Crédito", 1: "Débito"
 }
 
-function Card({cardName, cardType, cardNumber, visibleCardNumber}) {
+function Card({cardName, cardType, cardNumber, visibleCardNumber, visibleDeleteIcon}) {
     if (!visibleCardNumber)
         cardNumber = cardNumber.replaceAll(/\d{4} /g, "**** ")
 
@@ -31,12 +31,15 @@ function Card({cardName, cardType, cardNumber, visibleCardNumber}) {
                     </label>
                 </div>
             </div>
-            <IconButton icon="pencil" className="self-center w-12 h-12 m-3"></IconButton>
+            <div className="flex">
+                <IconButton icon="pencil" className={"self-center " + (visibleDeleteIcon ? "w-10 h-10 mx-1 my-4" : "w-12 h-12 m-3")}></IconButton>
+                <IconButton icon="trash" className={"self-center " + (visibleDeleteIcon ? "w-10 h-10 m-1" : "hidden")}></IconButton>
+            </div>
         </article>
     );
 }
 
-function CardSection({cardDetails, cardNumberVisible, setCardNumberVisible}) {
+function CardSection({cardDetails, cardNumberVisible, setCardNumberVisible, canDeleteCards}) {
     const no_cards = cardDetails.length === 0;
 
     return (
@@ -51,7 +54,7 @@ function CardSection({cardDetails, cardNumberVisible, setCardNumberVisible}) {
             </div>
             <div className="overflow-y-auto scheme-dark">
                 { no_cards ? <NothingToSee></NothingToSee> :
-                    cardDetails.map((c) => <Card cardName={c.name} cardType={c.cardType} cardNumber={c.cardNumber} visibleCardNumber={cardNumberVisible}></Card>)
+                    cardDetails.map((c) => <Card cardName={c.name} cardType={c.cardType} cardNumber={c.cardNumber} visibleCardNumber={cardNumberVisible} visibleDeleteIcon={canDeleteCards}></Card>)
                 }
             </div>
         </section>
@@ -60,7 +63,7 @@ function CardSection({cardDetails, cardNumberVisible, setCardNumberVisible}) {
 
 export default function Earnings({
          cardDetails = [], showCards = true, canPaintEditAsPressed = false,
-         func
+         func, canDeleteCards = true
 }) {
     if (func === undefined || func === null)
         return;
@@ -90,7 +93,7 @@ export default function Earnings({
                         </label>
                     </div>
                 </div>
-                { showCards ? <CardSection cardDetails={cardDetails} cardNumberVisible={func.cardNumberVisible} setCardNumberVisible={func.setCardNumberVisible}></CardSection> : null }
+                { showCards ? <CardSection cardDetails={cardDetails} cardNumberVisible={func.cardNumberVisible} setCardNumberVisible={func.setCardNumberVisible} canDeleteCards={canDeleteCards}></CardSection> : null }
             </div>
             { action_button }
         </div>

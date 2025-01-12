@@ -19,13 +19,13 @@ export default function CardEditor({name = "", card_number = "", card_type = "0"
                     Tipo de tarjeta
                 </label>
                 <div className="flex justify-evenly w-1/2">
-                    <button onClick={() => setIsDebt(false)} className={"flex flex-col justify-center w-28 h-28 rounded-2xl border-accent-fg-0 dark:border-accent-fg-1 " + (!isDebt ? "bg-accent-0" : "border")}>
+                    <button onClick={() => setIsDebt(false)} className={"flex flex-col justify-center w-28 h-28 rounded-2xl transition-colors duration-300 border-accent-fg-0 dark:border-accent-fg-1 " + (!isDebt ? "bg-accent-0" : "border")}>
                         <GetSVG name="credit-card" classNameData={"w-12 h-12 self-center " + (!isDebt ? "text-accent-fg-1" : "")}></GetSVG>
                         <label className={"self-center " + (!isDebt ? "font-bold text-accent-fg-1" : "")}>
                             Crédito
                         </label>
                     </button>
-                    <button onClick={() => setIsDebt(true)} className={"flex flex-col justify-center w-28 h-28 rounded-2xl border-accent-fg-0 dark:border-accent-fg-1 " + (isDebt ? "bg-accent-0" : "border")}>
+                    <button onClick={() => setIsDebt(true)} className={"flex flex-col justify-center w-28 h-28 rounded-2xl transition-colors duration-300 border-accent-fg-0 dark:border-accent-fg-1 " + (isDebt ? "bg-accent-0" : "border")}>
                         <GetSVG name="banknotes" classNameData={"w-12 h-12 self-center " + (isDebt ? "text-accent-fg-1" : "")}></GetSVG>
                         <label className={"self-center " + (isDebt ? "font-bold text-accent-fg-1" : "")}>
                             Débito

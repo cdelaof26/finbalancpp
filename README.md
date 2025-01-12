@@ -58,6 +58,12 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.12
+- Removed add and subtract buttons from earnings editor
+- Added delete button to `CardSection` in `Earnings`
+- `Budgets` section is functional
+- Fixed visible passwords in `login`
+
 #### v0.0.11
 - Branches `main`, `back` and `backend` merged
 

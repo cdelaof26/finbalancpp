@@ -20,8 +20,8 @@ function LoginForm({submitAction, handleChange}) {
                 <h1 className="self-center text-3xl font-bold text-accent-fg-0 dark:text-accent-fg-1">
                     Iniciar sesión
                 </h1>
-                <FormField changeHandler={handleChange} placeholder="Correo electrónico" type="text" svg="envelope" className="mt-6" name="email"></FormField>
-                <FormField changeHandler={handleChange} placeholder="Contraseña" type="password" svg="key" className="mt-6" name="password"></FormField>
+                <FormField changeHandler={handleChange} placeholder="Correo electrónico" inputType="text" svg="envelope" className="mt-6" name="email"></FormField>
+                <FormField changeHandler={handleChange} placeholder="Contraseña" inputType="password" svg="key" className="mt-6" name="password"></FormField>
             </form>
             <button onClick={submitAction} className="self-center w-72 h-8 rounded-lg bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 hover:border-accent-0 transition:[border] duration-300">
                 Iniciar sesión
@@ -37,10 +37,10 @@ function SignupForm({submitAction, handleChange}) {
                 <h1 className="self-center text-3xl font-bold text-accent-fg-0 dark:text-accent-fg-1">
                     Registrarse
                 </h1>
-                <FormField changeHandler={handleChange} placeholder="Nombre de usuario" type="text" svg="user-circle" className="mt-3" name="username"></FormField>
-                <FormField changeHandler={handleChange} placeholder="Correo electrónico" type="text" svg="envelope" className="mt-3" name="email"></FormField>
-                <FormField changeHandler={handleChange} placeholder="Contraseña" type="password" svg="key" className="mt-3" name="password"></FormField>
-                <FormField changeHandler={handleChange} placeholder="Confirmar contraseña" type="password" svg="key" className="mt-3" name="confirmPassword"></FormField>
+                <FormField changeHandler={handleChange} placeholder="Nombre de usuario" inputType="text" svg="user-circle" className="mt-3" name="username"></FormField>
+                <FormField changeHandler={handleChange} placeholder="Correo electrónico" inputType="text" svg="envelope" className="mt-3" name="email"></FormField>
+                <FormField changeHandler={handleChange} placeholder="Contraseña" inputType="password" svg="key" className="mt-3" name="password"></FormField>
+                <FormField changeHandler={handleChange} placeholder="Confirmar contraseña" inputType="password" svg="key" className="mt-3" name="confirmPassword"></FormField>
             </form>
             <button onClick={submitAction} className="self-center w-72 h-8 rounded-lg bg-secondary-0 dark:bg-secondary-1 border border-accent-b-0 dark:border-accent-b-1 text-accent-fg-0 dark:text-accent-fg-1 hover:border-accent-0 transition:[border] duration-300">
                 Registrarse

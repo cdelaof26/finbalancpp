@@ -1,6 +1,9 @@
 import {useState} from "react";
 
 function updateValue(newValue, value, setValue, mode, setError) {
+    if (newValue.includes(","))
+        newValue = newValue.replaceAll(",", "");
+
     if (/^(\d+|\d+\.?\d+)$/g.test(newValue)) {
         let data = "";
         switch (mode) {

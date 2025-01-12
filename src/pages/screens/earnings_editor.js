@@ -55,7 +55,7 @@ export default function EarningsEditor({func}) {
                     color={a.color} setColor={(v) => {setProperty(v, "color", index)}}
                     editable={a.editable} setEditable={(v) => {setProperty(v, "editable", index)}}
                     value={a.value} deleteAction={() => deleteArticle(index)}
-                    component={<NumericValueEditor setError={func.setError} showAll={true} initialValue={a.value} setValue={(v) => {setProperty(v, "value", index)}}></NumericValueEditor>}></EPreviewArticle>)
+                    component={<NumericValueEditor setError={func.setError} showModify={true} initialValue={a.value} setValue={(v) => {setProperty(v, "value", index)}}></NumericValueEditor>}></EPreviewArticle>)
                 }
             </div>
         </div>
