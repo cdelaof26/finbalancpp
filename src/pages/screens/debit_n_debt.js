@@ -18,9 +18,17 @@ function format_date(value) {
     return value;
 }
 
-function get_date() {
+export function get_date() {
     const d = new Date(Date.now());
     return d.getFullYear() + "-" + (d.getUTCMonth() + 1) + "-" + d.getUTCDate();
+}
+
+const day = 60 * 60 * 24;
+
+function expired(d) {
+    const now = Math.round(new Date(Date.now()).getTime() / 1000);
+    const date = Math.round(new Date(d).getTime() / 1000);
+    return now > date + day * 2;
 }
 
 function new_article() {
@@ -64,7 +72,12 @@ function EDPreviewArticle({
                     <div className="self-center w-6 h-6 rounded-full" style={{backgroundColor: color}}></div>
                     { label }
                 </div>
-                <IconButton icon={completed ? "check" : ""} className="self-center border w-8 h-8" toggleVar={completed} action={setCompleted}></IconButton>
+                <div className="flex">
+                    <label className={"self-center rounded-lg p-1 mr-6 uppercase text-sm font-bold border border-accent-b-0 dark:border-accent-b-1 bg-secondary-0 dark:bg-secondary-1 " + (!completed && expired(date) ? "" : "hidden")}>
+                        Caducado
+                    </label>
+                    <IconButton icon={completed ? "check" : ""} className="self-center border w-8 h-8" toggleVar={completed} action={setCompleted}></IconButton>
+                </div>
             </div>
             <div className="flex justify-between my-3">
                 { value_label }
@@ -158,9 +171,6 @@ function Section({title, middle = false}) {
                completed={a.completed} setCompleted={(v) => setProperty(v, "completed", index, true)}
                deleteAction={() => deleteArticle(index, true)}
             ></EDPreviewArticle>) }
-            <label className="uppercase font-bold text-accent-dim-0 my-4">
-                Caducados
-            </label>
         </div>
     );
 }

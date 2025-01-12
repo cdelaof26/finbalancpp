@@ -2,12 +2,6 @@ import Earnings from "@/pages/screens/internal/earnings";
 import PreviewWidget from "@/pages/screens/internal/preview_widget";
 
 export default function HomePage({func}) {
-    const card_details = [
-        {"name": "BBVA", "cardType": "0", "cardNumber": "0123 0123 0123 0123"},
-        {"name": "Liverpool", "cardType": "1", "cardNumber": "0123 0123 0123 0123"},
-        {"name": "Soriana", "cardType": "1", "cardNumber": "0123 0123 0123 0123"}
-    ];
-
     const debt_example = [
         { "color": "#E7473D", "caption": "Pagar tarjeta Liverpool", "value": "12/12/2025" },
         { "color": "#F59D05", "caption": "Devolver dinero a María", "value": "12/12/2025" },
@@ -38,7 +32,7 @@ export default function HomePage({func}) {
 
     return (
         <div className="flex justify-center w-full">
-            <Earnings cardDetails={card_details} func={func} canDeleteCards={false}></Earnings>
+            <Earnings func={func} canDeleteCards={false}></Earnings>
             <div className="flex flex-col w-[40%] mx-4">
                 <PreviewWidget title="Adeudos y deudas próximas" data={debt_data}></PreviewWidget>
                 <PreviewWidget title="Presupuestos" data={ {"className": "mt-2", "icons": ["eye-slash"], "buttonCaption": "Ver todos los presupuestos", "buttonAction": () => { func.setSidebarToggled(4); func.loadBudgets() } } }></PreviewWidget>

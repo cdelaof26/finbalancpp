@@ -32,6 +32,7 @@ export default function Home() {
         "loadBudgets": () => { setSubPage(0); setCurrentPage(6) },
         "loadInvestments": () => { setSubPage(0); setCurrentPage(7) },
         "loadTips": () => { setSubPage(0); setCurrentPage(8) },
+        "getCurrentPage": () => currentPage,
 
         "subPage": subPage,
         "userEarnings": userEarnings,

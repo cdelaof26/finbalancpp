@@ -58,6 +58,11 @@ npm run tauri build
 
 ### Versioning
 
+#### v0.0.13
+- Create card is functional
+- Removed expired section in debit and debt
+  - Added badge to expired items instead
+
 #### v0.0.12
 - Removed add and subtract buttons from earnings editor
 - Added delete button to `CardSection` in `Earnings`
