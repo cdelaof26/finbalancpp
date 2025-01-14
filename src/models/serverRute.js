@@ -1,1 +1,1 @@
-export const host = "http://localhost:80/finbalancpp/src/backend/access/";
+export const host = "http://127.0.0.1:8000/api/";
