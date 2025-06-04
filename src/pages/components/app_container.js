@@ -14,7 +14,7 @@ export default function AppContainer({page_name, func = null}) {
     switch (page_name) {
         case "myAccount":
             titleText = "Mi cuenta";
-            page = <MyAccount></MyAccount>;
+            page = <MyAccount func={func}></MyAccount>;
         break;
         case "earningsNCards":
             titleText = "Mis ingresos y tarjetas";
@@ -38,11 +38,11 @@ export default function AppContainer({page_name, func = null}) {
         break;
         case "investments":
             titleText = "Mis inversiones";
-            page = <Investments></Investments>;
+            page = <Investments func={func}></Investments>;
         break;
         case "tips":
             titleText = "Tips";
-            page = <Tips></Tips>
+            page = <Tips func={func}></Tips>
         break;
         default: // home
             titleText = "FinbalanC++";

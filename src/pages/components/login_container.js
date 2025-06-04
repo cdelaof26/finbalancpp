@@ -13,7 +13,7 @@ function showHelpSection() {
     );
 }
 
-export default function LoginContainer({helpSectionOpen, loginOpen, setShowLogin}) {
+export default function LoginContainer({helpSectionOpen, loginOpen, func}) {
     return (
         <div className="w-full h-full p-6 bg-gradient-to-tl from-cyan-500 to-blue-500 dark:from-sky-800 dark:to-blue-950">
             <div>
@@ -25,7 +25,7 @@ export default function LoginContainer({helpSectionOpen, loginOpen, setShowLogin
                 </h2>
             </div>
             <div className="flex h-[88%] justify-center">
-                { helpSectionOpen ? showHelpSection() : UserPrompt(loginOpen, setShowLogin) }
+                { helpSectionOpen ? showHelpSection() : UserPrompt(loginOpen, func) }
             </div>
         </div>
     );

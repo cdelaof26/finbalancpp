@@ -7,7 +7,7 @@ export default function Cards({func}) {
         return;
 
     const [card, setCard] = useState(newCard());
-    func["loadCard"] = (card) => { setCard(card) };
+    func["loadCard"] = (card) => { if (card === undefined) newCard(); else setCard(card) };
 
     const validateProperty = (v, p) => {
         switch (p) {

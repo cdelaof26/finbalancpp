@@ -1,13 +1,14 @@
 import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
 import GetSVG from "@/pages/svg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {fetchData, fetchDataGET} from "@/api/host";
 
 function Note({title = null, image = null, clickAction}) {
     if (title === null)
         return <NothingToSee></NothingToSee>
 
     return (
-        <button onClick={clickAction} className="self-center w-40 h-40 lg:w-64 lg:h-64 rounded-xl bg-primary-0 dark:bg-primary-1">
+        <button onClick={clickAction} className="self-center w-40 h-40 xl:w-64 xl:h-64 rounded-xl bg-primary-0 dark:bg-primary-1">
             <span className="flex justify-center w-full h-1/2 rounded-t-xl bg-slate-300 dark:bg-slate-800">
                 { image === null ? <GetSVG name="photo" classNameData="self-center w-12 h-12"></GetSVG> : null }
             </span>
@@ -21,9 +22,7 @@ function Note({title = null, image = null, clickAction}) {
     );
 }
 
-function NoteViewer({title = null, image = null, contentLink = null}) {
-    const content = "";
-
+function NoteViewer({title = null, image = null, content = ""}) {
     if (title === null)
         return (
             <div className="flex flex-col justify-between overflow-y-auto w-[60%] ml-4 p-8 rounded-2xl border-2 bg-primary-0 dark:bg-primary-1 dark:text-accent-fg-1">
@@ -51,14 +50,12 @@ function NoteViewer({title = null, image = null, contentLink = null}) {
     );
 }
 
-export default function Tips() {
-    const notes = [
-        /*{"title": "Aprende a invertir en bitcoin", "image": null, "contentLink" : null},
-        {"title": "¡No te dejes engañar! Bitcoin y las estafas online", "image": null, "contentLink" : null},
-        {"title": "Planifica tu retiro: consejos para una jubilación tranquila.", "image": null, "contentLink" : null},
-        {"title": "Ahorra sabiamente: consejos para una vida financiera sólida.", "image": null, "contentLink" : null},
-        {"title": "Domina tus gastos: estrategias para un presupuesto equilibrado.", "image": null, "contentLink" : null}*/
-    ];
+export default function Tips({func}) {
+    const [notes, setNotes] = useState([]);
+
+    useEffect(() => {
+        fetchDataGET("tips").then(n => setNotes(n)).catch((e) => { console.error('Error al obtener los datos:', e); if (func !== undefined) func.setError("Error las notas", "Tips no disponible"); });
+    }, []);
 
     const [note, setNote] = useState({});
 
@@ -83,7 +80,7 @@ export default function Tips() {
                     </div>
                 </div>
             </div>
-            <NoteViewer title={note.title} image={note.image} contentLink={note.contentLink}></NoteViewer>
+            <NoteViewer title={note.title} image={note.image} content={note.content}></NoteViewer>
         </div>
     );
 }

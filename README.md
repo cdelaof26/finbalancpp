@@ -1,4 +1,4 @@
-# FinbalanC++ `[Front]`
+# FinbalanC++
 
 FinbalanC++ es una aplicación para el manejo de 
 finanzas personales. Esta herramienta permite 
@@ -40,6 +40,16 @@ npm run dev
 npm run tauri dev
 ```
 
+### Running Python backend
+
+```bash
+# Navigate to the backend directory
+cd finbalancpp/src/python
+
+# Run
+python3 main.py
+```
+
 ### Building from source
 
 ```bash
@@ -57,6 +67,9 @@ npm run tauri build
 ```
 
 ### Versioning
+
+#### v0.0.15
+- Python backend
 
 #### v0.0.14
 - My investments page is now functional

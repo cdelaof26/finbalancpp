@@ -3,12 +3,27 @@ import {format_money} from "@/pages/screens/internal/e_preview_article";
 import Title from "@/pages/screens/internal/title_with_buttons";
 import IconButton from "@/pages/screens/internal/icon_button";
 import GetSVG from "@/pages/svg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {get_date} from "@/pages/screens/debit_n_debt";
+import {fetchData, callAPI} from "@/api/host";
 
-function Card({cardName, cardType, cardNumber, visibleCardNumber, editable = false, visibleDeleteIcon, editAction, deleteAction}) {
+function isCredit(cardType) {
+    return cardType === "0" || cardType.toLowerCase() === "credito" || cardType.toLowerCase() === "crédito";
+}
+
+function getTypeName(cardType) {
+    return isCredit(cardType) ? "Credito" : "Debito";
+}
+
+function Card({
+        cardName = "", cardType = "", cardNumber = "",
+        visibleCardNumber = true, editable = false, visibleDeleteIcon = false,
+        editAction = null, deleteAction = null
+}) {
     if (!visibleCardNumber)
-        cardNumber = cardNumber.replaceAll(/\d{4} /g, "**** ")
+        cardNumber = ("" + cardNumber).replaceAll(/\d{4} /g, "**** ")
+
+    const noNumber = cardNumber.length === 0;
 
     return (
         <article className="flex justify-between my-4 p-3 w-full rounded-xl bg-primary-0 dark:bg-primary-1">
@@ -16,15 +31,15 @@ function Card({cardName, cardType, cardNumber, visibleCardNumber, editable = fal
                 <div className="flex flex-col mx-4">
                     <GetSVG name="credit-card" classNameData="w-12 h-12 self-center"></GetSVG>
                     <label className="self-center uppercase text-xs font-bold text-accent-dim-0 dark:text-accent-dim-1">
-                        { cardType === "0" ? "Crédito" : "Débito"}
+                        { isCredit(cardType) ? "Crédito" : "Débito"}
                     </label>
                 </div>
                 <div className="flex flex-col justify-center">
                     <label className="text-2xl font-bold">
                         { cardName.length === 0 ? "Tarjeta sin nombre" : cardName }
                     </label>
-                    <label className={!visibleCardNumber ? "text-lg" : ""}>
-                        { cardNumber.length === 0 ? "Sin número" : cardNumber }
+                    <label className={(noNumber ? "text-sm text-red-700 " : "") + (!visibleCardNumber ? "text-lg" : "")}>
+                        { noNumber ? "No disponible: ingresa un número válido" : cardNumber }
                     </label>
                 </div>
             </div>
@@ -77,56 +92,115 @@ export default function Earnings({
         return;
 
     const [cardDetails, setCardDetails] = useState([]);
-    const [loadedCardIndex, setLoadedCardIndex] = useState(-1);
+    const [loadedCardIndex, setLoadedCardIndex] = useState(func.subPage);
+
+    useEffect(() => {
+        fetchData("cards", func.userId).then((d) => {
+            let c;
+            if (d.length > loadedCardIndex && func.loadCard !== undefined) {
+                c = d[loadedCardIndex];
+                if (c !== undefined) {
+                    c["editable"] = true;
+                    d[loadedCardIndex] = c;
+                    func.loadCard(c);
+                }
+            }
+            setCardDetails(d);
+        }).catch((e) => { console.error('Error al obtener los datos:', e); func.setError("Error al cargar los datos", "Tarjetas no disponibles"); });
+    }, []);
 
     const createCard = () => {
-        const newCards = [...cardDetails];
         const c = newCard();
-        newCards.push(c);
-        func.loadCard(c);
-        setCardDetails(newCards);
-        setLoadedCardIndex(cardDetails.length);
+
+        const push = ({ id }) => {
+            c["id"] = id;
+            const newCards = [...cardDetails];
+            for (let _c of newCards)
+                _c["editable"] = false;
+
+            newCards.push(c);
+            func.loadCard(c);
+            setCardDetails(newCards);
+            setLoadedCardIndex(cardDetails.length);
+        }
+
+        callAPI("createCard", func.userId, c, "POST").then(push).catch((e) => { console.error('Error al ejecutar:', e); func.setError("Error al crear tarjeta", "Tarjetas no disponibles"); });
     };
 
-    const saveCard = (index) => {
-        // Save, then load earnings and cards section
-        
+    const editAction = (index) => {
+        const c = cardDetails[index];
         const newCards = [...cardDetails];
-        const c = newCards[index];
-        c["editable"] = false;
+
+        if (!c["editable"]) {
+            if (func.getCurrentPage() !== 4)
+                func.loadCards(index);
+
+            for (let _c of newCards)
+                _c["editable"] = false;
+            c["editable"] = true;
+            setCardDetails(newCards);
+            setLoadedCardIndex(index);
+            if (func.loadCard !== undefined)
+                func.loadCard(c);
+            return;
+        }
+
+        for (let _c of newCards)
+            _c["editable"] = false;
         newCards[index] = c;
         setCardDetails(newCards);
+        setLoadedCardIndex(-1);
+        func.loadCard(newCard());
 
-        func.loadEarningsNCards(0);
+        // func.loadEarningsNCards(0);
     }
 
     const deleteCard = (index) => {
-        const newCards = [...cardDetails];
-        newCards.splice(index, 1);
-        setCardDetails(newCards);
-        if (index === newCards.length) {
-            func.loadCard(newCards[cardDetails.length]);
-            setLoadedCardIndex(cardDetails.length);
+        const c = cardDetails[index];
+
+        const del = () => {
+            const newCards = [...cardDetails];
+            newCards.splice(index, 1);
+
+            for (let _c of newCards)
+                _c["editable"] = false;
+
+            setCardDetails(newCards);
+
+            if (index === newCards.length && newCards.length !== 0) {
+                func.loadCard(newCards[cardDetails.length]);
+                setLoadedCardIndex(cardDetails.length);
+            }
         }
+
+        callAPI("deleteCard", func.userId, {"id": c.id, "isCredit": isCredit(c.cardType)}, "POST").then(del).catch((e) => { console.error('Error al obtener los datos:', e); func.setError("Error al eliminar los datos", "No se pudo eliminar la tarjeta"); });
     }
 
     const setProperty = (value, property, index) => {
         if (loadedCardIndex === -1 || cardDetails.length < index)
             return;
 
-        const newCards = [...cardDetails];
-        const c = newCards[index];
-        c[property] = value;
-        newCards[index] = c;
-        setCardDetails(newCards);
+        const c = cardDetails[index];
+
+        const mod = () => {
+            const newCards = [...cardDetails];
+            c[property] = value;
+            newCards[index] = c;
+            setCardDetails(newCards);
+        }
+
+        if (property !== "editable")
+            callAPI("editCard", func.userId, {"id": c.id, "property": property, "value": property === "cardType" ? getTypeName(value) : value}, "POST").then(mod).catch((e) => { console.error('Error al ejecutar:', e); func.setError("Error al modificar tarjeta", "Tarjetas no disponibles"); });
+        else
+            mod();
     }
     func["setCardProperty"] = (v, p) => setProperty(v, p, loadedCardIndex);
 
     let action_button = null;
     if (showCards)
         action_button = (
-            <button onClick={() => { func.setSidebarToggled(2); if (func.getCurrentPage() !== 4) func.loadCards(); else createCard() }} className="self-center w-full p-3 font-bold rounded-lg bg-primary-0 dark:bg-primary-1 text-accent-fg-0 dark:text-accent-fg-1">
-                { func.getCurrentPage() !== 4 ? "Ver todas las tarjetas" : "Nueva tarjeta" }
+            <button onClick={() => { func.setSidebarToggled(2); if (func.getCurrentPage() !== 4) func.loadCards(-1); else createCard() }} className="self-center w-full p-3 font-bold rounded-lg bg-primary-0 dark:bg-primary-1 text-accent-fg-0 dark:text-accent-fg-1">
+                { func.getCurrentPage() !== 4 ? "Editor de tarjetas" : "Nueva tarjeta" }
             </button>
         );
 
@@ -149,7 +223,7 @@ export default function Earnings({
                 </div>
                 { showCards ? <CardSection
                     cardDetails={cardDetails} cardNumberVisible={func.cardNumberVisible} setCardNumberVisible={func.setCardNumberVisible}
-                    canDeleteCards={canDeleteCards} editAction={saveCard} deleteAction={deleteCard}
+                    canDeleteCards={canDeleteCards} editAction={editAction} deleteAction={deleteCard}
                 ></CardSection> : null }
             </div>
             { action_button }

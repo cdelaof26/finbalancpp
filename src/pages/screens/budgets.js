@@ -4,8 +4,9 @@ import EPreviewArticle, {format_money} from "@/pages/screens/internal/e_preview_
 import Title from "@/pages/screens/internal/title_with_buttons";
 import Earnings from "@/pages/screens/internal/earnings";
 import GetSVG from "@/pages/svg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {newColor} from "@/pages/screens/internal/color_editor";
+import {callAPI, fetchData} from "@/api/host";
 
 function Recommendation({title = null, body = null, icon = null, deleteAction = null}) {
     if (title === null || body === null || icon === null)
@@ -44,6 +45,7 @@ export default function Budgets({func}) {
 
     const [articles, setArticles] = useState([]);
 
+
     const validateNewBudget = (index, newBudgetValue) => {
         let totalInBudgets = Number(newBudgetValue);
         for (let i = 0; i < articles.length; i++)
@@ -58,18 +60,37 @@ export default function Budgets({func}) {
         return !e; // if earnings > totalInBudgets -> proceed to set property
     };
 
+    useEffect(() => {
+        fetchData("budgets", func.userId).then(setArticles).catch((e) => { console.error('Error al obtener los datos:', e); func.setError("Error al cargar los datos", "Presupuestos no disponibles"); });
+    }, []);
+
     const setProperty = (value, property, index) => {
-        const newArticles = [...articles];
-        const a = newArticles[index];
-        a[property] = value;
-        newArticles[index] = a;
-        setArticles(newArticles);
+        const a = articles[index];
+
+        const mod = () => {
+            const newArticles = [...articles];
+            a[property] = value;
+            newArticles[index] = a;
+            setArticles(newArticles);
+        }
+
+        if (property !== "editable")
+            callAPI("editBudget", func.userId, {"id": a.id, "property": property, "value": value}, "POST").then(mod).catch((e) => { console.error('Error al ejecutar:', e); func.setError("Error al modificar categoría", "Categorías no disponibles"); });
+        else
+            mod();
     };
 
     const createArticle = () => {
-        const newArticles = [...articles];
-        newArticles.push(newArticle());
-        setArticles(newArticles);
+        const a = newArticle();
+
+        const push = ({ id }) => {
+            a["id"] = id;
+            const newArticles = [...articles];
+            newArticles.push(a);
+            setArticles(newArticles);
+        }
+
+        callAPI("createBudget", func.userId, a, "POST").then(push).catch((e) => { console.error('Error al ejecutar:', e); func.setError("Error al crear categoría", "Categorías no disponibles"); });
     };
 
     const deleteArticle = (index) => {

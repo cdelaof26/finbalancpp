@@ -2,11 +2,11 @@ import InvestmentEditor from "@/pages/screens/internal/investment_editor";
 import {format_money} from "@/pages/screens/internal/e_preview_article";
 import {format_date, get_date} from "@/pages/screens/debit_n_debt";
 import Title from "@/pages/screens/internal/title_with_buttons";
-import {newColor} from "@/pages/screens/internal/color_editor";
 import IconButton from "@/pages/screens/internal/icon_button";
 import GetSVG from "@/pages/svg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
+import {callAPI, fetchData} from "@/api/host";
 
 function investmentTimeHorizonToNumber(investmentTimeHorizon) {
     switch (investmentTimeHorizon.toLowerCase()) {
@@ -19,6 +19,11 @@ function investmentTimeHorizonToNumber(investmentTimeHorizon) {
         default: // anual
             return 60 * 60 * 24 * 365;
     }
+}
+
+export function date_form(n) {
+    const d = new Date(Date.parse(n));
+    return d.getFullYear() + "-" + (d.getUTCMonth() + 1) + "-" + d.getUTCDate();
 }
 
 function addInvestmentTimeHorizonTo(d, ith) {
@@ -36,6 +41,9 @@ function Article({
          investmentTimeHorizon = "", editable = false, setEditable = null,
          deleteAction = null
 }) {
+
+    // investmentTimeHorizon IS NOW investmentDateEnd
+
     const no_movement_expected = value === expectedValue;
     const increase_expected = Number(value) < Number(expectedValue);
 
@@ -44,10 +52,7 @@ function Article({
             <div className="flex flex-col justify-between">
                 <div className="flex justify-between">
                     <div className="flex self-center">
-                        <div className="self-center w-6 h-6 rounded-full" style={{backgroundColor: color}}></div>
-                        <label className="ps-3 self-center">
-                            { caption }
-                        </label>
+                        { caption.length === 0 ? "Inversión sin nombre" : caption }
                     </div>
                     <div className="flex self-center">
                         <label className="self-center">
@@ -64,13 +69,13 @@ function Article({
                         </label>
                     </div>
                     <label className="flex justify-center font-bold uppercase text-sm text-accent-dim-0 dark:text-accent-dim-1">
-                        { no_movement_expected ? "Sin movimiento" : increase_expected ? "crecimiento" : "decremento" } esperado para el { addInvestmentTimeHorizonTo(investmentDate, investmentTimeHorizon) }
+                        { no_movement_expected ? "Sin movimiento" : increase_expected ? "crecimiento" : "decremento" } esperado para el { format_date(investmentTimeHorizon) }
                     </label>
                 </div>
 
                 <div className="flex justify-between">
                     <label className="self-center">
-                        Rendimiento {performance + " " + investmentTimeHorizon}
+                        Rendimiento {performance + "%"}
                     </label>
                     <div className="flex">
                         <IconButton icon="trash" className="self-center mx-2 w-8 h-8" action={deleteAction}></IconButton>
@@ -84,27 +89,44 @@ function Article({
 
 function newArticle() {
     return {
-        "caption": "", "color": newColor(), "investmentType": "", "performance": "",
-        "investmentTimeHorizon": "", "investmentDate": get_date(), "value": "", "expectedValue": "",
+        "caption": "", "investmentType": "", "performance": "0",
+        "investmentTimeHorizon": get_date(), "investmentDate": get_date(), "value": "0", "expectedValue": "",
         "editable": true
     };
 }
 
-export default function Investments() {
+export default function Investments({func}) {
     const [investments, setInvestments] = useState([]);
     const [loadedInvestment, setLoadedInvestment] = useState(-1);
 
-    const createArticle = () => {
-        const newInvestments = [...investments];
-        newInvestments.push(newArticle());
-        if (loadedInvestment !== -1) {
-            const a = newInvestments[loadedInvestment];
-            a["editable"] = false;
-            newInvestments[loadedInvestment] = a;
+    useEffect(() => {
+        const set = (articles) => {
+            for (let a of articles)
+                a["expectedValue"] = calculateFinalBalance("" + a["value"], "" + a["performance"], "anual");
+            setInvestments(articles);
         }
 
-        setInvestments(newInvestments);
-        setLoadedInvestment(investments.length);
+        fetchData("investments", func.userId).then(set).catch((e) => { console.error('Error al obtener los datos:', e); func.setError("Error al cargar los datos", "Inversiones no disponibles"); });
+    }, []);
+
+    const createArticle = () => {
+        const a = newArticle();
+
+        const push = ({ id }) => {
+            a["id"] = id;
+            const newInvestments = [...investments];
+            newInvestments.push(a);
+            if (loadedInvestment !== -1) {
+                const aold = newInvestments[loadedInvestment];
+                aold["editable"] = false;
+                newInvestments[loadedInvestment] = aold;
+            }
+
+            setInvestments(newInvestments);
+            setLoadedInvestment(investments.length);
+        }
+
+        callAPI("createInvestment", func.userId, a, "POST").then(push).catch((e) => { console.error('Error al ejecutar:', e); func.setError("Error al crear inversión", "Inversiones no disponibles"); });
     }
 
     const calculateFinalBalance = (initialBalance, performance, timeHorizon) => {
@@ -126,28 +148,69 @@ export default function Investments() {
         performance = Number(performance) / 100;
         return "" + (Number(initialBalance) * Math.pow(1 + performance / 1, 1 * 1));
     }
-    
+
+    const day = 60 * 60 * 24;
+    function compareDate(d1, d2) {
+        const date1 = Math.round(new Date(d1).getTime() / 1000);
+        const date2 = Math.round(new Date(d2).getTime() / 1000);
+        return date1 > date2 + day * 2;
+    }
+
+    let previousCall = "";
     const setProperty = (value, property, index) => {
         if (index === -1 || investments.length < index)
             return;
 
-        const newInvestments = [...investments];
-        const a = newInvestments[index];
+        const a = investments[index];
 
-        if (property === "value" || property === "performance" || property === "investmentTimeHorizon")
-            a["expectedValue"] = calculateFinalBalance(a["value"], a["performance"], a["investmentTimeHorizon"]);
+        if (property === "investmentDate")
+            if (compareDate(value, a["investmentTimeHorizon"])) {
+                func.setError("Fecha inválida", "La fecha de inicio no puede ser mayor a la fecha de termino");
+                return;
+            }
 
-        a[property] = value;
-        newInvestments[index] = a;
-        setInvestments(newInvestments);
-        setLoadedInvestment(index);
+        if (property === "investmentTimeHorizon")
+            if (compareDate(a["investmentDate"], value)) {
+                func.setError("Fecha inválida", "La fecha de inicio no puede ser mayor a la fecha de termino");
+                return;
+            }
+
+        const mod = () => {
+            const newInvestments = [...investments];
+
+            a[property] = value;
+            if (property === "value" || property === "performance" || property === "investmentTimeHorizon")
+                a["expectedValue"] = calculateFinalBalance("" + a["value"], "" + a["performance"], "anual");
+
+            newInvestments[index] = a;
+            setInvestments(newInvestments);
+            setLoadedInvestment(index);
+        }
+
+        if (previousCall === property && previousCall === "date")
+            return;
+        previousCall = property;
+
+        const numeric = property === "performance" || property === "value";
+        const is_date = property === "investmentDate" || property === "investmentTimeHorizon";
+
+        if (property !== "editable" && value !== "")
+            callAPI("editInvestment", func.userId, {"id": a.id, "property": property, "value": numeric && value === "" ? "0" : is_date && value === "" ? get_date() : value}, "POST").then(mod).catch((e) => { console.error('Error al ejecutar:', e); func.setError("Error al modificar inversión", "Inversiones no disponibles"); });
+        else
+            mod();
     }
 
     const deleteArticle = (index) => {
-        const newInvestments = [...investments];
-        newInvestments.splice(index, 1);
-        setInvestments(newInvestments);
-        setLoadedInvestment(newInvestments.length !== 0 ? newInvestments.length : -1);
+        const a = investments[index];
+
+        const del = () => {
+            const newInvestments = [...investments];
+            newInvestments.splice(index, 1);
+            setInvestments(newInvestments);
+            setLoadedInvestment(newInvestments.length !== 0 ? newInvestments.length - 1 : -1);
+        }
+
+        callAPI("deleteInvestment", func.userId, {"id": a.id}, "POST").then(del).catch((e) => { console.error('Error al ejecutar:', e); func.setError("Error al eliminar inversión", "Inversiones no disponibles"); });
     }
 
     const loadInvestment = (index) => {
@@ -183,7 +246,6 @@ export default function Investments() {
                 <Title title={investments.length !== 0 ? "Detalles de la inversión" : ""}></Title>
                 <InvestmentEditor
                     caption={a.caption} setCaption={(v) => setProperty(v, "caption", loadedInvestment)}
-                    color={a.color} setColor={(v) => setProperty(v, "color", loadedInvestment)}
                     investmentType={a.investmentType} setInvestmentType={(v) => setProperty(v, "investmentType", loadedInvestment)}
                     performance={a.performance} setPerformance={(v) => setProperty(v, "performance", loadedInvestment)}
                     investmentTimeHorizon={a.investmentTimeHorizon} setInvestmentTimeHorizon={(v) => setProperty(v, "investmentTimeHorizon", loadedInvestment)}

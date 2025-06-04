@@ -5,7 +5,7 @@ import {get_date} from "@/pages/screens/debit_n_debt";
 import {format_money} from "@/pages/screens/internal/e_preview_article";
 
 export default function CardEditor({
-       name = null, setName = null, cardNumber = null, setCardNumber,
+       name = "", setName = null, cardNumber = "", setCardNumber = null,
        cardType  = "0", setCardType = null, funds = "0", setFunds = null,
        creditLimit = "0", setCreditLimit = null,
        cardPaymentDueDate = get_date(), setCardPaymentDueDate = null, setError = null

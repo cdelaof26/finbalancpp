@@ -1,21 +1,22 @@
 import NothingToSee from "@/pages/screens/internal/nothing_to_show_component";
 import Title from "@/pages/screens/internal/title_with_buttons";
+import {format_money} from "@/pages/screens/internal/e_preview_article";
 
 function PreviewArticle({
         caption = null, value = null, color = null,
-        captionClassName = "", articleClassName = ""
+        captionClassName = "", articleClassName = "", visible = true
 }) {
     if (caption === null)
         return <NothingToSee></NothingToSee>;
 
-    const value_label = value !== null ? <label> { value } </label> : null;
+    const value_label = value !== null ? <label> { visible ? format_money(value) : "****" } </label> : null;
     const color_badge = color !== null ? <div className="w-6 h-6 rounded-full" style={{backgroundColor: color}}></div> : null;
 
     if (value_label === null && color_badge === null) {
         return (
             <article className={"flex w-full p-3 rounded-xl bg-primary-0 dark:bg-primary-1 " + articleClassName}>
                 <label className={" " + captionClassName + (caption.length > 24 ? " text-sm" : "")}>
-                    { caption }
+                    { caption === "" ? "Elemento sin nombre" : caption }
                 </label>
             </article>
         );
@@ -26,7 +27,7 @@ function PreviewArticle({
             <div className="flex">
                 { color_badge }
                 <label className="ps-3">
-                    { caption }
+                    { caption === "" ? "Elemento sin nombre" : caption }
                 </label>
             </div>
             { value_label }
@@ -38,6 +39,9 @@ export default function PreviewWidget({title, data = null}) {
     let class_data = "";
     let height = " h-1/2";
     let icons = [];
+    let action = [];
+    let toggleVar = [];
+    let toggleIcon = [];
     let displayable_data = [{}];
     let max_items = 3;
     let button = null;
@@ -49,6 +53,12 @@ export default function PreviewWidget({title, data = null}) {
             height = data.doNotLimitHeight ? "" : height;
         if ("icons" in data)
             icons = data.icons;
+        if ("action" in data)
+            action = data.action;
+        if ("toggleVar" in data)
+            toggleVar = data.toggleVar;
+        if ("toggleIcon" in data)
+            toggleIcon = data.toggleIcon;
         if ("maxItems" in data)
             max_items = data.maxItems;
         if ("data" in data)
@@ -64,7 +74,7 @@ export default function PreviewWidget({title, data = null}) {
     return (
         <section className={"flex flex-col justify-between p-8 rounded-2xl bg-secondary-0 dark:bg-secondary-1 dark:text-accent-fg-1 " + class_data + height}>
             <div>
-                <Title title={title} icons={icons}></Title>
+                <Title title={title} icons={icons} action={action} toggleVar={toggleVar} toggleIcon={toggleIcon}></Title>
                 <div>
                     { displayable_data.length === 0 ? <NothingToSee></NothingToSee> : displayable_data.map((d) => PreviewArticle(d)) }
                 </div>

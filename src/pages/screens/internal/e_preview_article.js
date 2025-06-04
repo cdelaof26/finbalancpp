@@ -3,6 +3,7 @@ import ColorEditor from "@/pages/screens/internal/color_editor";
 import IconButton from "@/pages/screens/internal/icon_button";
 
 export function format_money(value) {
+    value = "" + value;
     if (value.length === 0)
         return "$0";
 
@@ -33,7 +34,7 @@ export function format_money(value) {
 }
 
 export default function EPreviewArticle({
-        title, setTitle = null, value, editable, setEditable = null, color, setColor = null, deleteAction = null, component,
+        title = "", setTitle = null, value = "", editable = false, setEditable = null, color = "", setColor = null, deleteAction = null, component,
         render = true, indicator = "", editableClassName = ""
 }) {
     // console.log(caption === null, value === null, initialColor === null, editableClassName === null, component === null);
